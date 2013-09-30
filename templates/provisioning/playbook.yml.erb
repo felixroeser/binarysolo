@@ -19,16 +19,16 @@
     - name: Restart nginx
       action: service name=nginx pattern=/etc/init.d/nginx state=restarted enabled=yes  
 
-#- include: playbooks/locale.yml
-#- include: playbooks/rbenv/main.yml
+- include: playbooks/locale.yml
+- include: playbooks/rbenv/main.yml
 - include: playbooks/nginx/main.yml
 
 <% if @config[:gitolite][:enabled] %>
-#- include: playbooks/gitolite/main.yml
+- include: playbooks/gitolite/main.yml
 <% end %>
 
 <% if @config[:fwd][:enabled] %>
-#- include: playbooks/fwd/main.yml
+- include: playbooks/fwd/main.yml
 <% end %>
 
 <% if @config[:stringer][:enabled] %>
