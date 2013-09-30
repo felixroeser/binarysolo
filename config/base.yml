@@ -1,0 +1,25 @@
+# Please overwrite settings in custom.yml which is in gitignore
+# and dont change base.yml
+---
+provider: 'digitalocean'
+digitalocean:
+    size: '512MB'
+    region: 'New York 2'
+    # Dont change the image for now!
+    image: 'Ubuntu 12.04 x64'
+homebase:
+    master: 'earl'
+    hostname: 'homebase'
+    ssh_key: '~/.ssh/id_rsa'
+    dns_record: CHANGE_ME
+    gitolite:
+      ssh_key: '~/.ssh/id_rsa'
+    stringer:
+      password: CHANGE_ME
+      postgres_user_password: CHANGE_ME
+      server: CHANGE_ME
+      interval: 30
+    fwd:
+      server: CHANGE_ME
+    jekyll:
+      dns_record: 'blog.example.com'

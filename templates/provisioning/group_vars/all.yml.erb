@@ -1,0 +1,31 @@
+---
+ruby_version: 1.9.3-p448
+master: <%= @config[:master] %>
+master_ssh_key: <%= @config[:ssh_key] %>
+
+nginx_redirects: <%= @config[:nginx][:redirects].present? %>
+
+<% if @config[:fwd][:enabled] %>
+fwd_server: <%= @config[:fwd][:dns_record] %>
+<% end %>
+
+<% if @config[:gitolite][:enabled] %>
+gitolite_public_key: <%= @config[:gitolite][:ssh_key] || @config[:ssh_key] %>.pub
+gitolite_private_key: <%= @config[:gitolite][:ssh_key] || @config[:ssh_key] %>
+<% end %>
+
+<% if @config[:stringer][:enabled] %>
+stringer_server: <%= @config[:stringer][:dns_record] %>
+stringer_postgres_user_password: <%= @config[:stringer][:postgres_user_password] %>
+stringer_password: <%= @config[:stringer][:password] %>
+stringer_interval: <%= @config[:stringer][:interval] || 30 %>
+<% end %>
+
+<% if @config[:jekyll][:enabled] %>
+jekyll_server: <%= @config[:jekyll][:dns_record] %>
+<% if @config[:jekyll][:template_repo] %>
+jekyll_template_repo: <%= @config[:jekyll][:template_repo] %>
+jekyll_template_branch: <%= @config[:jekyll][:template_branch] || 'master' %>
+<% end %>
+jekyll_public_key: <%= @config[:ssh_key] %>.pub
+<% end %>

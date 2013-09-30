@@ -1,0 +1,16 @@
+---
+- hosts: all
+  sudo: true
+
+  tasks:
+    - name: postgres | add key
+      apt_key: id=ACCC4CF8 url=http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc state=present
+    - name: postgres | add repo
+      apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main' state=present
+    - apt: update_cache=yes cache_valid_time=7200
+    - name: postgresql | install package
+      apt: pkg=$item state=latest install_recommends=no
+      with_items:
+        - postgresql-9.3
+        - pgadmin3
+        - libpq-dev

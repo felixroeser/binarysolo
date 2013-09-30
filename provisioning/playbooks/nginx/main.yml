@@ -1,0 +1,32 @@
+---
+- hosts: all
+  sudo: yes
+  gather_facts: no
+
+  tasks:
+    - name: nginx | install
+      action: apt name=nginx
+
+    - name: nginx | write nginx.conf
+      action: template src=templates/nginx.conf.j2 dest=/etc/nginx/nginx.conf
+      notify:
+        - Restart nginx
+
+    - name: nginx | delete default vhost
+      action: file path=/etc/nginx/sites-enabled/default state=absent
+      notify:
+        - Restart nginx
+
+    - name: nginx | write redirects
+      action: template src=templates/redirects.j2 dest=/etc/nginx/sites-enabled/redirects
+      when: $nginx_redirects
+      notify:
+        - Restart nginx      
+
+    - name: nginx | allow http
+      shell: ufw allow 80
+
+
+  handlers:
+    - name: Restart nginx
+      action: service name=nginx pattern=/etc/init.d/nginx state=restarted enabled=yes  

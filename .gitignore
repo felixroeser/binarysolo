@@ -1,0 +1,12 @@
+# Config with secrects
+config/custom.yml
+
+# Dynamic files
+.vagrant
+vagrant_ansible_inventory_default
+Vagrantfile
+provisioning/playbook.yml
+provisioning/group_vars/all.yml
+provisioning/playbooks/nginx/templates/redirects.j2.erb
+
+README.draft

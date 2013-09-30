@@ -1,0 +1,10 @@
+export PATH=/usr/local/rbenv/shims/:/bin/:/usr/bin:/usr/local/bin/:/usr/local/sbin
+
+GIT_REPO=$HOME/repo.git
+TMP_GIT_CLONE=$HOME/tmp/repo
+PUBLIC_WWW=$HOME/site
+
+git clone $GIT_REPO $TMP_GIT_CLONE
+RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/jekyll build -s $TMP_GIT_CLONE -d $PUBLIC_WWW
+rm -Rf $TMP_GIT_CLONE
+exit

@@ -1,0 +1,41 @@
+---
+- hosts: all
+  tasks:
+    - apt: pkg=$item state=latest install_recommends=no
+      with_items:
+      - htop
+      - mc
+      - git-core
+      - python-pycurl
+      - python-psycopg2
+      - screen
+      - ufw
+    - name: ufw | allow ssh
+      shell: ufw allow 22
+    - name: ufw | enable
+      shell: ufw --force enable
+
+  handlers:
+    - name: Restart nginx
+      action: service name=nginx pattern=/etc/init.d/nginx state=restarted enabled=yes  
+
+#- include: playbooks/locale.yml
+#- include: playbooks/rbenv/main.yml
+- include: playbooks/nginx/main.yml
+
+<% if @config[:gitolite][:enabled] %>
+#- include: playbooks/gitolite/main.yml
+<% end %>
+
+<% if @config[:fwd][:enabled] %>
+#- include: playbooks/fwd/main.yml
+<% end %>
+
+<% if @config[:stringer][:enabled] %>
+- include: playbooks/postgres/main.yml
+- include: playbooks/stringer/main.yml
+<% end %>
+
+<% if @config[:jekyll][:enabled] %>
+- include: playbooks/jekyll/main.yml
+<% end %>

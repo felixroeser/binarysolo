@@ -1,0 +1,7 @@
+<% ((@config[:nginx] || {})[:redirects] || []).each do |r| %>
+server {
+    listen 80;
+    server_name <%= r[:from] %>;
+    return 301 http://<%= r[:to] %>$request_uri;
+}
+<% end %>

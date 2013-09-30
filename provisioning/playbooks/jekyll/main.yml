@@ -1,0 +1,57 @@
+---
+- hosts: all
+  sudo: yes
+
+  tasks:
+    - name: jekyll | install build depends
+      apt: pkg=$item state=latest install_recommends=no
+      sudo: true
+      with_items:
+        - git
+        - imagemagick
+        - libmagickwand-dev
+    - name: jekyll | create user
+      user: name=jekyll createhome=yes shell=/bin/bash
+
+    - name: jekyll | authorized_key
+      action: "copy dest=/home/jekyll/.ssh/authorized_keys src=$jekyll_public_key owner=jekyll group=jekyll mode=0660"
+
+    - name: jekyll | gem installed?
+      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem list | grep jekyll
+      register: jekyll_installed
+    - name: jekyll | install
+      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem install jekyll && rbenv rehash
+      when: not jekyll_installed.stdout
+
+    - name: jekyll | rdiscount gem installed?
+      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem list | grep rdiscount
+      register: rdiscount_installed
+    - name: jekyll | install
+      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem install rdiscount
+      when: not rdiscount_installed.stdout
+
+    - name: jekyll | repo already there?
+      stat: path=/home/jekyll/repo.git
+      register: site_git_path
+    - name: jekyll | ensure git repo
+      shell: sudo -Hu jekyll /bin/bash -c 'cd /home/jekyll && mkdir repo.git && cd repo.git && git --bare init'
+      when: site_git_path.stat.exists == false and not jekyll_template_repo
+    - name: jekyll | clone template
+      shell: sudo -Hu jekyll /bin/bash -c 'cd /home/jekyll && git clone --bare -b ${jekyll_template_branch} ${jekyll_template_repo} repo.git'
+      when: site_git_path.stat.exists == false and jekyll_template_repo
+    - name: jekyll | setup post receive hooks
+      template: src=templates/post-receive.j2 dest=/home/jekyll/repo.git/hooks/post-receive
+    - name: jekyll | ensure ownership
+      file: dest=/home/jekyll/repo.git mode=744 owner=jekyll group=jekyll recurse=yes state=directory
+
+    - name: stringer | create ~/site
+      file: dest=/home/jekyll/site mode=755 owner=jekyll group=jekyll state=directory
+
+    - name: jekyll | copy nginx config
+      template: src=templates/jekyll.nginx.j2 dest=/etc/nginx/sites-enabled/jekyll
+      notify: Restart nginx
+
+  handlers:
+    - name: Restart nginx
+      action: service name=nginx pattern=/etc/init.d/nginx state=restarted enabled=yes  
+

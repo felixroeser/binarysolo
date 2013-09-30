@@ -1,0 +1,6 @@
+#!/bin/bash
+export PATH=/usr/local/rbenv/shims/:/bin/:/usr/bin:/usr/local/bin/:/usr/local/sbin
+. /etc/profile.d/rbenv.sh
+cd /home/stringer/stringer
+. production.env
+bundle exec rake fetch_feeds >> /tmp/stringer_fetch_feeds.log

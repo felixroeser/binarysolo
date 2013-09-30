@@ -1,0 +1,35 @@
+---
+digitalocean:
+    client_id: GET_ONE_AT_DIGITALOCEAN_DOT_COM
+    api_key: GET_ONE_AT_DIGITALOCEAN_DOT_COM
+dns:
+    tld:
+      example.com:
+        # only A records supported so far...
+        - {type: 'A', name: '@',   data: 'homebase'}
+        - {type: 'A', name: 'feeds', data: 'homebase'}
+        - {type: 'A', name: 'whatever', data: '8.8.8.8'}
+homebase:
+    master: 'your_name'
+    hostname: 'homebase'
+    dns_record: 'example.com'
+    gitolite:
+      enabled: true
+    fwd:
+      enabled: true
+      dns_record: 'pseudosecrect.example.com'
+    stringer:
+      enabled: true
+      password: 'foobar'
+      postgres_user_password: 'jOLlprtW4CscaPdoPinoTw=='
+      dns_record: 'feeds.example.com'
+    jekyll:
+      enabled: true
+      dns_record: 'blog.example.com'
+      # Leave blank for the default theme
+      template_repo: 'https://github.com/caarlos0/up.git'
+      template_branch: 'gh-pages'
+    nginx:
+      redirects:
+        - {from: 'example.com', to: 'blog.example.com'}
+        - {from: 'www.example.com', to: 'blog.example.com'}

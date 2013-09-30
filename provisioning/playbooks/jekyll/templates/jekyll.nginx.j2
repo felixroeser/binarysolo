@@ -1,0 +1,7 @@
+server {
+  server_name {{ jekyll_server }};
+  root /home/jekyll/site/;
+  expires 1d;
+  access_log /var/log/nginx/jekyll-access.log;
+  error_log /var/log/nginx/jekyll-error.log;
+}

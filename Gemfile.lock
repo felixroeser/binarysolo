@@ -1,0 +1,44 @@
+GIT
+  remote: https://github.com/felixroeser/digital_ocean.git
+  revision: 0cf85e71b6a2e465452d6856b2537a3ff4349878
+  specs:
+    digital_ocean (1.2.0)
+      faraday (~> 0.8.7)
+      faraday_middleware (~> 0.9.0)
+      json
+      rash
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    active_support (3.0.0)
+      activesupport (= 3.0.0)
+    activesupport (3.0.0)
+    addressable (2.3.5)
+    awesome_print (1.1.0)
+    colorize (0.5.8)
+    domainatrix (0.0.11)
+      addressable
+    faraday (0.8.8)
+      multipart-post (~> 1.2.0)
+    faraday_middleware (0.9.0)
+      faraday (>= 0.7.4, < 0.9)
+    hashie (2.0.5)
+    ipaddress (0.8.0)
+    json (1.8.0)
+    multipart-post (1.2.0)
+    rash (0.4.0)
+      hashie (~> 2.0.0)
+    thor (0.18.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  active_support (>= 3.0)
+  awesome_print
+  colorize
+  digital_ocean!
+  domainatrix
+  ipaddress
+  thor
