@@ -4,9 +4,8 @@ module BinarySolo
     attr_accessor :config
 
     def initialize(config)
-      @provider_name = config[:provider]
-      @provider = config[@provider_name] || {}
-      @homebase = config[:homebase]
+      @provider = Provider.find_by_name(config[:provider]).new(config)
+      @homebase = Homebase.new(config)
     end
 
     def template
@@ -18,6 +17,7 @@ module BinarySolo
     end
 
     def save
+      return nil unless @provider
       File.open('./Vagrantfile', 'w+') { |f| f.write render }
     end
   end

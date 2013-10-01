@@ -26,5 +26,9 @@ module BinarySolo
       end
       self
     end
+
+    def self.components
+      [:fwd, :gitolite, :stringer, :jekyll]
+    end
   end
 end

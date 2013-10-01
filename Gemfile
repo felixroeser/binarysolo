@@ -7,3 +7,8 @@ gem "colorize"
 gem "digital_ocean", git: 'https://github.com/felixroeser/digital_ocean.git'
 gem "domainatrix"
 gem "ipaddress"
+
+group :test do
+  gem "rspec"
+  gem "rspec-given"
+end

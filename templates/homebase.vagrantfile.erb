@@ -3,24 +3,24 @@
 
 Vagrant.configure('2') do |config|
 
-  config.vm.hostname = '<%= @homebase[:hostname] %>'
+  config.vm.hostname = '<%= @homebase.hostname %>'
 
-  <% if @provider_name == 'digitalocean' %>
+  <% if @provider.name == 'digitalocean' %>
     config.vm.box = 'digital_ocean'
     config.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
 
     config.vm.provider :digital_ocean do |provider|
-      provider.client_id    = '<%= @provider[:client_id] %>'
-      provider.api_key      = '<%= @provider[:api_key] %>'
-      provider.region       = '<%= @provider[:region] %>'
-      provider.image        = '<%= @provider[:image] %>'
-      provider.size         = '<%= @provider[:size] %>'
+      provider.client_id    = '<%= @provider.config[:client_id] %>'
+      provider.api_key      = '<%= @provider.config[:api_key] %>'
+      provider.region       = '<%= @provider.config[:region] %>'
+      provider.image        = '<%= @provider.config[:image] %>'
+      provider.size         = '<%= @provider.config[:size] %>'
       provider.ssh_key_name = 'binary_solo_homebase'
     end  
   <% end %>
 
-  config.ssh.username = '<%= @homebase[:master] %>'
-  config.ssh.private_key_path = '<%= @homebase[:ssh_key] %>'
+  config.ssh.username = '<%= @homebase.master %>'
+  config.ssh.private_key_path = '<%= @homebase.config[:ssh_key] %>'
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "provisioning/playbook.yml"

@@ -51,7 +51,7 @@ thor bootstrap:install_deps
 * Get a [Digitalocean](https://www.digitalocean.com) account
   * we will be fine with the 0.7ct/hour instance
   * get a client_id and api_key [here](https://www.digitalocean.com/api_access)
-* Create and edit `config/custom.yml` overwriting the settings in [config/base.yml]() - use [config/custom.sample.yml]() as a blueprint
+* Create and edit `config/custom.yml` overwriting the settings in [config/base.yml](config/base.yml) - use [config/custom.sample.yml]() as a blueprint
   * Required
     * **TBA**
   * Optional
