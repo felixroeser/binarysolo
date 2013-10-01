@@ -11,7 +11,6 @@ dns:
         - {type: 'A', name: 'whatever', data: '8.8.8.8'}
 homebase:
     master: 'your_name'
-    hostname: 'homebase'
     dns_record: 'example.com'
     gitolite:
       enabled: true
@@ -26,7 +25,7 @@ homebase:
     jekyll:
       enabled: true
       dns_record: 'blog.example.com'
-      # Leave blank for the default theme
+      # Leave blank or remove for the default theme
       template_repo: 'https://github.com/caarlos0/up.git'
       template_branch: 'gh-pages'
     nginx:

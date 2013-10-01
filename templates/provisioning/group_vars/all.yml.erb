@@ -3,7 +3,7 @@ ruby_version: 1.9.3-p448
 master: <%= @config[:master] %>
 master_ssh_key: <%= @config[:ssh_key] %>
 
-nginx_redirects: <%= @config[:nginx][:redirects].present? %>
+nginx_redirects: <%= @config[:nginx] && @config[:nginx][:redirects].present? %>
 
 <% if @config[:fwd][:enabled] %>
 fwd_server: <%= @config[:fwd][:dns_record] %>

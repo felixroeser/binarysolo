@@ -17,9 +17,9 @@ homebase:
     stringer:
       password: CHANGE_ME
       postgres_user_password: CHANGE_ME
-      server: CHANGE_ME
+      dns_record: CHANGE_ME
       interval: 30
     fwd:
-      server: CHANGE_ME
+      dns_record: CHANGE_ME
     jekyll:
       dns_record: 'blog.example.com'

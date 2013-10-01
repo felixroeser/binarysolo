@@ -17,6 +17,8 @@ class Homebase < Thor
 
     BinarySolo::Vagrantfile.new(@config).save
 
+    puts "Written Vagrantfile...".colorize(:green)
+
     say "Now run:".colorize(:green)
     say "$ thor homebase:playbooks"
   end
@@ -32,6 +34,9 @@ class Homebase < Thor
     [:fwd, :gitolite, :stringer, :jekyll].each do |c|
       puts "...#{c} enabled".colorize(:green) if @config[:homebase][c][:enabled]
     end
+
+    say "Now run:".colorize(:green)
+    say "$ vagrant up --provider digital_ocean"    
   end
 
   desc "dns", "TBA"
