@@ -12,6 +12,7 @@ Requirements
 * Vagrant 1.3+
 * Ansible 1.3
 * Ruby
+* A dedicated domain: kinda pointless without - at least you have to setup A records with your current dns provider
 
 #### OSX
 
@@ -51,7 +52,7 @@ thor bootstrap:install_deps
 * Get a [Digitalocean](https://www.digitalocean.com) account
   * we will be fine with the 0.7ct/hour instance
   * get a client_id and api_key [here](https://www.digitalocean.com/api_access)
-* Create and edit `config/custom.yml` overwriting the settings in [config/base.yml](config/base.yml) - use [config/custom.sample.yml]() as a blueprint
+* Create and edit `config/custom.yml` overwriting the settings in [config/base.yml](config/base.yml) - use [config/custom.sample.yml](config/custom.sample.yml) as a blueprint
   * Required
     * **TBA**
   * Optional
@@ -61,4 +62,8 @@ thor bootstrap:install_deps
 thor homebase:vagrantfile
 thor homebase:playbooks
 vagrant up --provider digital_ocean
+# be patient - provisioning the box takes some time
+thor homebase:dns
+# ssh into your new box and have a look around
+vagrant ssh
 ```

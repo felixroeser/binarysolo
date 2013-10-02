@@ -56,8 +56,8 @@ module BinarySolo
       puts "* dns.ensure_subdomains".colorize(:blue)
 
       # needed for homebase itself
-      subdomains = @config_homebase.inject([@config_homebase[:dns_record]]) do |a, (k, v)|
-        v.is_a?(Hash) && v[:dns_record] ? a << v[:dns_record] : a
+      subdomains = @config_homebase.inject([@config_homebase[:public_host]]) do |a, (k, v)|
+        v.is_a?(Hash) && v[:public_host] ? a << v[:public_host] : a
       end.compact.collect do |domain| 
         url = Domainatrix.parse(domain)
         next if url.subdomain.blank?

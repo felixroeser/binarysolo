@@ -6,7 +6,7 @@ master_ssh_key: <%= @config[:ssh_key] %>
 nginx_redirects: <%= @config[:nginx] && @config[:nginx][:redirects].present? %>
 
 <% if @config[:fwd][:enabled] %>
-fwd_server: <%= @config[:fwd][:dns_record] %>
+fwd_server: <%= @config[:fwd][:public_host] %>
 <% end %>
 
 <% if @config[:gitolite][:enabled] %>
@@ -15,14 +15,14 @@ gitolite_private_key: <%= @config[:gitolite][:ssh_key] || @config[:ssh_key] %>
 <% end %>
 
 <% if @config[:stringer][:enabled] %>
-stringer_server: <%= @config[:stringer][:dns_record] %>
+stringer_server: <%= @config[:stringer][:public_host] || '127.0.0.1' %>
 stringer_postgres_user_password: <%= @config[:stringer][:postgres_user_password] %>
 stringer_password: <%= @config[:stringer][:password] %>
 stringer_interval: <%= @config[:stringer][:interval] || 30 %>
 <% end %>
 
 <% if @config[:jekyll][:enabled] %>
-jekyll_server: <%= @config[:jekyll][:dns_record] %>
+jekyll_server: <%= @config[:jekyll][:public_host] || '127.0.0.1' %>
 <% if @config[:jekyll][:template_repo] %>
 jekyll_template_repo: <%= @config[:jekyll][:template_repo] %>
 jekyll_template_branch: <%= @config[:jekyll][:template_branch] || 'master' %>

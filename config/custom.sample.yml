@@ -11,20 +11,20 @@ dns:
         - {type: 'A', name: 'whatever', data: '8.8.8.8'}
 homebase:
     master: 'your_name'
-    dns_record: 'example.com'
+    public_host: 'example.com'
     gitolite:
       enabled: true
     fwd:
       enabled: true
-      dns_record: 'pseudosecrect.example.com'
+      public_host: 'pseudosecrect.example.com'
     stringer:
       enabled: true
       password: 'foobar'
-      postgres_user_password: 'jOLlprtW4CscaPdoPinoTw=='
-      dns_record: 'feeds.example.com'
+      postgres_user_password: MONSTER_SECRET
+      public_host: 'feeds.example.com'
     jekyll:
       enabled: true
-      dns_record: 'blog.example.com'
+      public_host: 'blog.example.com'
       # Leave blank or remove for the default theme
       template_repo: 'https://github.com/caarlos0/up.git'
       template_branch: 'gh-pages'

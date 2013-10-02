@@ -24,7 +24,7 @@ class Homebase < Thor
     puts "Written playbook.yml...".colorize(:green)
 
     BinarySolo::Playbooks.components.each do |c|
-      puts "...#{c} enabled".colorize if config[:homebase][c][:enabled]
+      puts "...#{c} enabled" if config[:homebase][c][:enabled]
     end
 
     say "Now run:"
@@ -38,14 +38,24 @@ class Homebase < Thor
     BinarySolo::Dns.new(config).save
   end
 
+  desc "dns_setup", "TBA"
+  def dns_setup
+    ensure_homebase
+
+    dns_setup = BinarySolo::DnsSetup.new(config, homebase)
+    dns_setup.save
+  end
+
   desc "fwd", "TBA"
   def fwd(port)
     ensure_homebase
 
-    say "reverse tunnel on port #{port} should be up an running!".colorize(:green)
+    fwd = BinarySolo::Components::Fwd.new(config, homebase)
+
+    say "reverse tunnel on port #{port} should be up an running at http://#{fwd.public_host}!".colorize(:green)
     say "kill the connection with Control-C"
 
-    `ssh -N -R 8989:localhost:#{port} #{homebase.master}@#{homebase.current_ip}`
+    fwd.up(port)
   end
 
   # Helpers
@@ -62,7 +72,7 @@ class Homebase < Thor
     end
 
     def ensure_homebase
-      return if homebase.exists?
+      return true if homebase.exists?
       say "Your homebase is not up and running!".colorize(:red)
       exit 1
     end

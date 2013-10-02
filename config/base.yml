@@ -11,15 +11,15 @@ homebase:
     master: 'earl'
     hostname: 'homebase'
     ssh_key: '~/.ssh/id_rsa'
-    dns_record: CHANGE_ME
+    public_host: CHANGE_ME
     gitolite:
       ssh_key: '~/.ssh/id_rsa'
     stringer:
       password: CHANGE_ME
       postgres_user_password: CHANGE_ME
-      dns_record: CHANGE_ME
+      public_host: CHANGE_ME
       interval: 30
     fwd:
-      dns_record: CHANGE_ME
+      public_host: CHANGE_ME
     jekyll:
-      dns_record: 'blog.example.com'
+      public_host: 'blog.example.com'
