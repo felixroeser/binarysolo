@@ -63,7 +63,7 @@ thor homebase:vagrantfile
 thor homebase:playbooks
 vagrant up --provider digital_ocean
 # be patient - provisioning the box takes some time
-thor homebase:dns
+thor homebase:dns_setup
 # ssh into your new box and have a look around
 vagrant ssh
 ```

@@ -14,6 +14,18 @@ module BinarySolo
         client.droplets.list['droplets'].find { |d| d['name'] == name }
       end
 
+      def domain_create(name, destination)
+        @client.domains.create({name: name, ip_address: destination})
+      end
+
+      def domain_record_create(domain, data)
+        @client.domains.create_record(domain.provider_id, data)
+      end
+
+      def domain_record_update(domain, record, payload)
+        @client.domains.edit_record(domain.provider_id, record.provider_id, payload.merge({name: record.name, record_type: record.type}))
+      end
+
       def raw_domains(opts={})
         response = @client.domains.list
         return [] unless response['status'] == 'OK'
@@ -30,8 +42,8 @@ module BinarySolo
         response = @client.domains.list_records(domain_id)
         return [] unless response['status'] == 'OK'
         response['records'].collect do |r| 
-          r.except('id', 'domain_id', 'record_type').
-            merge(provider_id: r['id'], type: r['record_type']).
+          r.merge(provider_id: r['id'], type: r['record_type']).
+            except('id', 'domain_id', 'record_type').
             with_indifferent_access
         end
       end

@@ -31,13 +31,6 @@ class Homebase < Thor
     say "$ vagrant up --provider digital_ocean"    
   end
 
-  desc "dns", "TBA"
-  def dns
-    ensure_homebase
-    
-    BinarySolo::Dns.new(config).save
-  end
-
   desc "dns_setup", "TBA"
   def dns_setup
     ensure_homebase

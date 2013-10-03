@@ -2,14 +2,15 @@ require 'spec_helper'
 
 describe BinarySolo::Provider do
 
-  Given(:homebase) { double :homebase}
   Given(:config) { test_config }
+  Given(:homebase) { double :homebase, config: config[:homebase] }
   Given(:klass) { BinarySolo::DnsSetup }
 
   Given(:dns_setup) { klass.new(config, homebase)}
 
   describe '#initialize' do
     Then { dns_setup.config == config[:dns] }
+    Then { dns_setup.config.present? == true }
   end
 
   describe '#registered_domains' do
@@ -28,6 +29,30 @@ describe BinarySolo::Provider do
       Given(:raw_domains_response) { [] }
       When(:result) {  dns_setup.registered_domains }
       Then { result == []}
+    end
+  end
+
+  describe '#save' do
+    before do
+      dns_setup.should_receive(:ensure_domains!).and_return(foo_result)
+    end
+
+    context 'var steps passed' do
+      before do
+        dns_setup.should_receive(:ensure_records!).and_return(foo_result)
+      end
+
+      Given(:foo_result) { true }
+      Then { dns_setup.save == dns_setup }
+    end
+
+    context 'ensure_domains fails' do
+      before do
+        dns_setup.should_not_receive(:ensure_records!)
+      end
+
+      Given(:foo_result) { false }
+      Then { dns_setup.save == nil }
     end
 
   end

@@ -44,6 +44,7 @@ GEM
     rspec-mocks (2.14.3)
     sorcerer (1.0.2)
     thor (0.18.1)
+    whois (3.2.1)
 
 PLATFORMS
   ruby
@@ -57,3 +58,4 @@ DEPENDENCIES
   rspec
   rspec-given
   thor
+  whois

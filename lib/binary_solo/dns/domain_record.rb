@@ -1,7 +1,7 @@
 module BinarySolo
   class DomainRecord
 
-    attr_reader :type, :name, :data, :priority, :provider_id
+    attr_accessor :type, :name, :data, :priority, :provider_id
 
     def initialize(params={})
       @type     = params[:type]
@@ -11,7 +11,8 @@ module BinarySolo
       @port     = params[:port]
       @weight   = params[:weight]
 
-      @provider_id = params[:domain_id]
+      @provider_id        = params[:provider_id] || params[:id]
+      @domain_provider_id = params[:domain_id]
     end
 
     def meta?
