@@ -19,7 +19,7 @@ module BinarySolo
       end
 
       def domain_record_create(domain, data)
-        @client.domains.create_record(domain.provider_id, data)
+        @client.domains.create_record(domain.provider_id, data.select { |k, v| !v.nil? } )
       end
 
       def domain_record_update(domain, record, payload)
@@ -46,6 +46,10 @@ module BinarySolo
             except('id', 'domain_id', 'record_type').
             with_indifferent_access
         end
+      end
+
+      def nameservers
+        3.times.collect { |i| "NS#{i}.DIGITALOCEAN.COM" }
       end
 
       def self.name

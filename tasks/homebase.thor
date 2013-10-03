@@ -35,8 +35,7 @@ class Homebase < Thor
   def dns_setup
     ensure_homebase
 
-    dns_setup = BinarySolo::DnsSetup.new(config, homebase)
-    dns_setup.save
+    BinarySolo::DnsSetup.new(config, homebase).save
   end
 
   desc "fwd", "TBA"

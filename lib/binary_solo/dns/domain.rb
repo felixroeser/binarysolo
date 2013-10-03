@@ -5,12 +5,14 @@ module BinarySolo
 
     def initialize(params={})
       @name    = params[:name]
-      @records = (params[:records] || []).collect { |r| DomainRecord.new(r) }
+      @records = (params[:records] || []).collect { |r| DomainRecord.new(r) }.select { |r| r.supported?}
       @provider_id = params[:provider_id]
     end
 
-    def find_record(type, name)
-      records.find { |r| r.type == type && r.name == name}
+    def find_record(type, name, data=nil)
+      records.find do |r| 
+        r.type == type && r.name == name && (data.blank? || r.data == data)
+      end
     end
 
   end

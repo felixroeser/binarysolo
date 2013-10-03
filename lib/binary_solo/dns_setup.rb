@@ -1,3 +1,4 @@
+require 'whois'
 require_relative 'dns/domain'
 require_relative 'dns/domain_record'
 
@@ -50,24 +51,33 @@ module BinarySolo
 
     def ensure_domains!
       @domains.each do |domain|
+        # FIXME check for invalid name
+
         destination = domain.find_record('A', '@').try(:data)
         destination = @homebase.current_ip if destination.nil? || destination == 'homebase'
         registered_domain = registered_domains.find { |d| d.name == domain.name }
 
         if registered_domain.blank?
-          @logger.debug "#{domain.name} missing - setting to #{destination}"
+          @logger.info "#{domain.name} missing - setting to #{destination}"
           @homebase.provider.domain_create(domain.name, destination)
         else
           registered_record = registered_domain.find_record('A', '@')
           if registered_record.blank?
-            @logger.debug "A @ for #{domain.name} missing - setting to #{destination}"
+            @logger.info "A @ for #{domain.name} missing - setting to #{destination}"
             @homebase.provider.domain_record_create(registered_domain, {name: '@', record_type: 'A', data: destination})
           elsif registered_record.data != destination
-            @logger.debug "A @ for #{domain.name} outdated - points to #{registered_record.data} - setting to #{destination}"            
+            @logger.info "A @ for #{domain.name} outdated - points to #{registered_record.data} - setting to #{destination}"            
             @homebase.provider.domain_record_update(registered_domain, registered_record, {data: destination})
           else
             @logger.debug "#{domain.name} uptodate"
           end
+        end
+
+        who = Whois.whois(domain.name)
+        if !who.registered?
+          @logger.warn "#{domain.name} is not registered at all..."
+        elsif (who.nameservers.map(&:values).flatten.compact.map(&:upcase) & @homebase.provider.nameservers).blank?
+          @logger.warn "#{domain.name} doesnt point to the #{@homebase.provider.name} nameservers"
         end
       end
     end
@@ -81,18 +91,18 @@ module BinarySolo
 
         next if domain.records.blank? || registered_domain.blank?
 
-        domain.records.each do |record|
+        domain.records.map(&:meta_replacements).flatten.each do |record|
           next if record.type == 'A' && record.name == '@'
 
-          data = record.meta? ? @homebase.current_ip : record.data
+          data = record.meta? == 'homebase' ? @homebase.current_ip : record.data
 
-          registered_record = registered_domain.find_record(record.type, record.name)
+          registered_record = registered_domain.find_record(record.type, record.name, record.type == 'MX' ? data : nil )
 
           if registered_record.nil?
-            @logger.debug "#{domain.name} #{record.type} #{record.name} with #{data} is misssing"
-            @homebase.provider.domain_record_create(registered_domain, {name: record.name, record_type: record.type, data: data})
+            @logger.info "#{domain.name} #{record.type} #{record.name} with #{data} is misssing"
+            @homebase.provider.domain_record_create(registered_domain, {name: record.name, record_type: record.type, data: data, priority: record.priority})
           elsif registered_record.data != data
-            @logger.debug "#{domain.name} #{record.type} #{record.name} with #{data} is outdated"
+            @logger.info "#{domain.name} #{record.type} #{record.name} with #{data} is outdated - setting to #{data}"
             @homebase.provider.domain_record_update(registered_domain, registered_record, {data: data})
           else
             @logger.debug "#{domain.name} #{record.type} #{record.name} with #{data} is uptodate"
