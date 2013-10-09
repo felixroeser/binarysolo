@@ -27,7 +27,7 @@
 - include: playbooks/gitolite/main.yml
 <% end %>
 
-<% if @config[:fwd][:enabled] %>
+<% if @components[:fwd].enabled? %>
 - include: playbooks/fwd/main.yml
 <% end %>
 
@@ -36,6 +36,6 @@
 - include: playbooks/stringer/main.yml
 <% end %>
 
-<% if @config[:jekyll][:enabled] %>
+<% if @components[:jekyll].enabled? %>
 - include: playbooks/jekyll/main.yml
 <% end %>

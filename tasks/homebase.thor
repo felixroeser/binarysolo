@@ -23,8 +23,8 @@ class Homebase < Thor
 
     puts "Written playbook.yml...".colorize(:green)
 
-    BinarySolo::Playbooks.components.each do |c|
-      puts "...#{c} enabled" if config[:homebase][c][:enabled]
+    pb.components.each do |c|
+      puts "...#{c.class.name} enabled" if c.enabled?
     end
 
     say "Now run:"

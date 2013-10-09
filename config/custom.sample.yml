@@ -5,10 +5,11 @@ digitalocean:
 dns:
     tld:
       example.com:
-        # only A records supported so far...
         - {type: 'A', name: '@',   data: 'homebase'}
         - {type: 'A', name: 'feeds', data: 'homebase'}
         - {type: 'A', name: 'whatever', data: '8.8.8.8'}
+        - {type: 'TXT', name: '@', data: 'google-site-verification=123' }
+        - {type: 'MX', data: 'gmail' }
 homebase:
     master: 'your_name'
     public_host: 'example.com'

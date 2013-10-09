@@ -13,6 +13,7 @@ require_relative 'binary_solo/provider'
 require_relative 'binary_solo/homebase'
 require_relative 'binary_solo/vagrantfile'
 require_relative 'binary_solo/playbooks'
+require_relative 'binary_solo/ssl'
 require_relative 'binary_solo/components'
 require_relative 'binary_solo/dns_setup'
 

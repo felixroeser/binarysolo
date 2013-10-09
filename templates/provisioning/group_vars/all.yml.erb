@@ -7,6 +7,7 @@ nginx_redirects: <%= @config[:nginx] && @config[:nginx][:redirects].present? %>
 
 <% if @config[:fwd][:enabled] %>
 fwd_server: <%= @config[:fwd][:public_host] %>
+fwd_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@config[:fwd][:public_host]) %>
 <% end %>
 
 <% if @config[:gitolite][:enabled] %>
@@ -19,6 +20,7 @@ stringer_server: <%= @config[:stringer][:public_host] || '127.0.0.1' %>
 stringer_postgres_user_password: <%= @config[:stringer][:postgres_user_password] %>
 stringer_password: <%= @config[:stringer][:password] %>
 stringer_interval: <%= @config[:stringer][:interval] || 30 %>
+stringer_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@config[:stringer][:public_host]) %>
 <% end %>
 
 <% if @config[:jekyll][:enabled] %>

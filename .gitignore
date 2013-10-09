@@ -1,5 +1,6 @@
 # Config with secrects
 config/custom.yml
+config/ssl
 
 # Dynamic files
 .vagrant
@@ -7,6 +8,7 @@ vagrant_ansible_inventory_default
 Vagrantfile
 provisioning/playbook.yml
 provisioning/group_vars/all.yml
-provisioning/playbooks/nginx/templates/redirects.j2.erb
+provisioning/playbooks/nginx/templates/redirects.j2
+provisioning/playbooks/jekyll/templates/jekyll.nginx
 
 README.draft

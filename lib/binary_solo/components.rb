@@ -1,10 +1,13 @@
 require_relative 'components/fwd'
+require_relative 'components/jekyll'
+require_relative 'components/stringer'
+require_relative 'components/gitolite'
 
 module BinarySolo
   module Components
 
     def all
-      [Fwd]
+      [Fwd, Jekyll, Stringer, Gitolite]
     end
 
   end
