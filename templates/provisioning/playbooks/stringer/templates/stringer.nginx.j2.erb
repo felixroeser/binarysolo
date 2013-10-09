@@ -1,9 +1,11 @@
+<% stringer = @components[:stringer] %>
+
 upstream stringer {
     server 127.0.0.1:5000;
 }
 
 server {
-  server_name {{ stringer_server }};
+  server_name <%= stringer.public_host %>;
   location / {
     access_log /var/log/nginx/stringer-access.log;
     error_log /var/log/nginx/stringer-error.log;
@@ -14,3 +16,23 @@ server {
     proxy_redirect off;
   }
 }
+
+<% if stringer.ssl_enabled? %>
+server {
+  listen 443;
+  server_name <%= stringer.public_host %>;
+  location / {
+    access_log /var/log/nginx/stringer-access.log;
+    error_log /var/log/nginx/stringer-error.log;
+    proxy_pass http://stringer;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+  }
+
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/<%= stringer.ssl_domain %>/server.crt;
+  ssl_certificate_key /etc/nginx/ssl/<%= stringer.ssl_domain %>/server.key;
+}
+<% end %>

@@ -5,7 +5,7 @@
 
   tasks:
     - name: fwd | copy nginx config
-      template: src=templates/fwd.j2 dest=/etc/nginx/sites-enabled/fwd
+      template: src=templates/fwd.nginx.j2 dest=/etc/nginx/sites-enabled/fwd
       notify: Restart nginx
 
   handlers:

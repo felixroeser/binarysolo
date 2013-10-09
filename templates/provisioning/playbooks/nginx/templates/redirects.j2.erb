@@ -1,7 +1,20 @@
-<% ((@config[:nginx] || {})[:redirects] || []).each do |r| %>
+<% nginx = @components[:nginx] %>
+
+<% nginx.redirects.each do |r| %>
 server {
-    listen 80;
-    server_name <%= r[:from] %>;
-    return 301 http://<%= r[:to] %>$request_uri;
+  listen 80;
+  server_name <%= r[:from] %>;
+  return 301 http://<%= r[:to] %>$request_uri;
 }
+<% if r[:ssl_path] %>
+server {
+	listen 443;
+	server_name <%= r[:from] %>;
+	return 301 https://<%= r[:to] %>$request_uri;
+
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/<%= r[:ssl_domain] %>/server.crt;
+  ssl_certificate_key /etc/nginx/ssl/<%= r[:ssl_domain] %>/server.key;
+}
+<% end %>
 <% end %>

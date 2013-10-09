@@ -3,31 +3,37 @@ ruby_version: 1.9.3-p448
 master: <%= @config[:master] %>
 master_ssh_key: <%= @config[:ssh_key] %>
 
-nginx_redirects: <%= @config[:nginx] && @config[:nginx][:redirects].present? %>
+nginx_redirects: <%= @components[:nginx].redirects.present? %>
 
-<% if @config[:fwd][:enabled] %>
-fwd_server: <%= @config[:fwd][:public_host] %>
-fwd_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@config[:fwd][:public_host]) %>
+<% if @components[:fwd].enabled? %>
+fwd_server: <%= @components[:fwd].public_host %>
+fwd_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@components[:fwd].public_host) %>
 <% end %>
 
-<% if @config[:gitolite][:enabled] %>
-gitolite_public_key: <%= @config[:gitolite][:ssh_key] || @config[:ssh_key] %>.pub
-gitolite_private_key: <%= @config[:gitolite][:ssh_key] || @config[:ssh_key] %>
+<% if @components[:gitolite].enabled? %>
+gitolite_public_key: <%= @components[:gitolite].ssh_key || @config[:ssh_key] %>.pub
+gitolite_private_key: <%= @components[:gitolite].ssh_key || @config[:ssh_key] %>
 <% end %>
 
-<% if @config[:stringer][:enabled] %>
-stringer_server: <%= @config[:stringer][:public_host] || '127.0.0.1' %>
-stringer_postgres_user_password: <%= @config[:stringer][:postgres_user_password] %>
-stringer_password: <%= @config[:stringer][:password] %>
-stringer_interval: <%= @config[:stringer][:interval] || 30 %>
-stringer_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@config[:stringer][:public_host]) %>
+<% if @components[:stringer].enabled? %>
+stringer_server: <%= @components[:stringer].public_host || '127.0.0.1' %>
+stringer_postgres_user_password: <%= @components[:stringer].postgres_user_password %>
+stringer_password: <%= @components[:stringer].password %>
+stringer_interval: <%= @components[:stringer].interval || 30 %>
+stringer_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@components[:stringer].public_host) %>
 <% end %>
 
-<% if @config[:jekyll][:enabled] %>
-jekyll_server: <%= @config[:jekyll][:public_host] || '127.0.0.1' %>
-<% if @config[:jekyll][:template_repo] %>
-jekyll_template_repo: <%= @config[:jekyll][:template_repo] %>
-jekyll_template_branch: <%= @config[:jekyll][:template_branch] || 'master' %>
+<% if @components[:jekyll].enabled? %>
+jekyll_server: <%= @components[:jekyll].public_host || '127.0.0.1' %>
+<% if @components[:jekyll].template_repo %>
+jekyll_template_repo: <%= @components[:jekyll].template_repo %>
+jekyll_template_branch: <%= @components[:jekyll].template_branch || 'master' %>
 <% end %>
 jekyll_public_key: <%= @config[:ssh_key] %>.pub
+<% end %>
+
+<% if ssl_base_path = BinarySolo::Ssl.new.base_path %>
+ssl_base_path: <%= ssl_base_path %>
+ssl_files: <%= BinarySolo::Ssl.new.files_for_nginx %>
+ssl_directories: <%= BinarySolo::Ssl.new.ssl_directories %>
 <% end %>

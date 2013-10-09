@@ -1,9 +1,11 @@
+<% fwd = @components[:fwd] %>
+
 upstream fwd {
     server 127.0.0.1:8989;
 }
 
 server {
-  server_name {{ fwd_server }};
+  server_name <%= fwd.public_host %>;
   location / {
     access_log /var/log/nginx/fwd-access.log;
     error_log /var/log/nginx/fwd-error.log;
@@ -14,3 +16,23 @@ server {
     proxy_redirect off;
   }
 }
+
+<% if fwd.ssl_enabled? %>
+server {
+  listen 443;
+  server_name <%= fwd.public_host %>;
+  location / {
+    access_log /var/log/nginx/fwd-access.log;
+    error_log /var/log/nginx/fwd-error.log;
+    proxy_pass http://fwd;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_redirect off;
+  }
+
+  ssl on;
+  ssl_certificate /etc/nginx/ssl/<%= fwd.ssl_domain %>/server.crt;
+  ssl_certificate_key /etc/nginx/ssl/<%= fwd.ssl_domain %>/server.key;
+}
+<% end %>

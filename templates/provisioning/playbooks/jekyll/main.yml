@@ -13,18 +13,22 @@
     - name: jekyll | create user
       user: name=jekyll createhome=yes shell=/bin/bash
 
+    - name: jekyll | create ~/.ssh
+      file: dest=/home/jekyll/.ssh mode=700 state=directory owner=jekyll group=jekyll
     - name: jekyll | authorized_key
-      action: "copy dest=/home/jekyll/.ssh/authorized_keys src=$jekyll_public_key owner=jekyll group=jekyll mode=0660"
+      copy: dest=/home/jekyll/.ssh/authorized_keys src=$jekyll_public_key owner=jekyll group=jekyll mode=0660
 
     - name: jekyll | gem installed?
       shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem list | grep jekyll
+      ignore_errors: true
       register: jekyll_installed
     - name: jekyll | install
-      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem install jekyll && rbenv rehash
+      shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem install jekyll && RBENV_ROOT=${rbenv_root} rbenv rehash
       when: not jekyll_installed.stdout
 
     - name: jekyll | rdiscount gem installed?
       shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem list | grep rdiscount
+      ignore_errors: true
       register: rdiscount_installed
     - name: jekyll | install
       shell: RBENV_ROOT=${rbenv_root} /usr/local/rbenv/shims/gem install rdiscount
