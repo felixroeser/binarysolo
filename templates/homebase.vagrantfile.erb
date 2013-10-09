@@ -23,7 +23,7 @@ Vagrant.configure('2') do |config|
   config.ssh.private_key_path = '<%= @homebase.config[:ssh_key] %>'
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "provisioning/playbook.yml"
+    ansible.playbook = "_provisioning/playbook.yml"
     ansible.sudo = true
     ansible.verbose = true
   end
