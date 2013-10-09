@@ -6,7 +6,8 @@ https://github.com/felixroeser/binarysolo
 
 ### Motivation
 
-*Host [String](https://github.com/swanson/stringer) on a cheap   and add some goodies like gitolite, jekyll*
+*Host [Stringer](https://github.com/swanson/stringer) on a cheap [DigitalOcean](https://www.digitalocean.com/) 5$ box
+and add some goodies like gitolite, jekyll and a http reverse proxy*
 
 ### Vision
 
@@ -16,7 +17,7 @@ Manage arbitrary development boxes and have a constant homebase
 
 Requirements
 
-* Vagrant 1.3+
+* Vagrant 1.3+ (might go away at some point)
 * Ansible 1.3
 * Ruby
 * A dedicated domain: kinda pointless without - at least you should have an A records with your current dns provider
