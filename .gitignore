@@ -6,9 +6,6 @@ config/ssl
 .vagrant
 vagrant_ansible_inventory_default
 Vagrantfile
-provisioning/playbook.yml
-provisioning/group_vars/all.yml
-provisioning/playbooks/nginx/templates/redirects.j2
-provisioning/playbooks/jekyll/templates/jekyll.nginx
+_provisioning
 
 README.draft

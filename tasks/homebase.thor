@@ -21,14 +21,16 @@ class Homebase < Thor
   def playbooks
     pb = BinarySolo::Playbooks.new(config).save
 
-    puts "Written playbook.yml...".colorize(:green)
+    say "Written playbook.yml...".colorize(:green)
 
-    pb.components.each do |c|
-      puts "...#{c.class.name} enabled" if c.enabled?
+    pb.components.values.each do |c|
+      say "...#{c.class.name} enabled" if c.enabled?
     end
 
     say "Now run:"
     say "$ vagrant up --provider digital_ocean"    
+    say " or "
+    say "$ vagrant provision"
   end
 
   desc "dns_setup", "TBA"

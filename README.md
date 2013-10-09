@@ -4,6 +4,13 @@
 
 https://github.com/felixroeser/binarysolo
 
+### Motivation
+
+*Host [String](https://github.com/swanson/stringer) on a cheap   and add some goodies like gitolite, jekyll*
+
+### Vision
+
+Manage arbitrary development boxes and have a constant homebase
 
 ### Installation
 
@@ -12,7 +19,7 @@ Requirements
 * Vagrant 1.3+
 * Ansible 1.3
 * Ruby
-* A dedicated domain: kinda pointless without - at least you have to setup A records with your current dns provider
+* A dedicated domain: kinda pointless without - at least you should have an A records with your current dns provider
 
 #### OSX
 
@@ -57,12 +64,16 @@ thor bootstrap:install_deps
     * **TBA**
   * Optional
     * **TBA**
+* (Optional) Have ssl certificates ready for the domain you want to use and place them in ssl/domain
+  * Use ````thor ssl:gen_crt example.com```` to generate a self signed certificate and key in ````ssl/example.com````
+  * Or see [here](https://www.digitalocean.com/community/articles/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04)
 
 ```
 thor homebase:vagrantfile
 thor homebase:playbooks
-vagrant up --provider digital_ocean
 # be patient - provisioning the box takes some time
+vagrant up --provider digital_ocean
+# apply the configured dns records to the digital ocean nameserver
 thor homebase:dns_setup
 # ssh into your new box and have a look around
 vagrant ssh

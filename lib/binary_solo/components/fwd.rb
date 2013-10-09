@@ -1,18 +1,24 @@
 module BinarySolo
   module Components
     class Fwd
-      attr_accessor :public_host
+      attr_accessor :public_host, :ssl_path, :ssl_domain
 
       def initialize(config, homebase)
-        fwd_config = config[:homebase][:fwd] || {}
+        fwd_config = config[:fwd] || {}
 
         @enabled     = fwd_config[:enabled]
         @public_host = fwd_config[:public_host]
+        @ssl_path    = BinarySolo::Ssl.new.path_for_domain(@public_host)
+        @ssl_domain  = BinarySolo::Ssl.new.path_for_domain(@public_host, false)        
         @homebase    = homebase
       end
 
       def enabled?
         @enabled && @public_host.present?
+      end
+
+      def ssl_enabled?
+        enabled? && @ssl_path.present?
       end
 
       def up(port, opts={})
