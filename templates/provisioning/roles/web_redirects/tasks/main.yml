@@ -1,0 +1,6 @@
+---
+- name: nginx | write redirects
+  template: src=redirects.j2 dest=/etc/nginx/sites-enabled/redirects
+  when: $nginx_redirects
+  notify:
+    - Restart nginx      

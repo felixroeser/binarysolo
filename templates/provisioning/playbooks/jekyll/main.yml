@@ -48,12 +48,17 @@
     - name: jekyll | ensure ownership
       file: dest=/home/jekyll/repo.git mode=744 owner=jekyll group=jekyll recurse=yes state=directory
 
-    - name: stringer | create ~/site
+    - name: jekyll | create ~/site
       file: dest=/home/jekyll/site mode=755 owner=jekyll group=jekyll state=directory
+      notify:
+        - Generate site
 
     - name: jekyll | copy nginx config
       template: src=templates/jekyll.nginx.j2 dest=/etc/nginx/sites-enabled/jekyll
-      notify: Restart nginx
+      # notify: Restart nginx
 
   handlers:
-    - include: ../../handlers/site.yml
+    - name: Generate site
+      shell: sudo -Hu jekyll /bin/bash -c 'sh ~/repo.git/hooks/post-receive'
+
+    # - include: ../../handlers/site.yml

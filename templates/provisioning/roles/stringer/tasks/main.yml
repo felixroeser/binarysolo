@@ -1,0 +1,50 @@
+---
+- name: stringer | install build depends
+  apt: pkg=$item state=latest install_recommends=no
+  sudo: true
+  with_items:
+    - git
+    - libxml2-dev
+    - libxslt1-dev
+    - libcurl4-openssl-dev
+    - libpq-dev
+    - libsqlite3-dev
+    - build-essential
+    - libreadline-dev
+- name: stringer | create user
+  user: name=stringer createhome=yes shell=/bin/bash
+- name: stringer | create ~/bin
+  file: dest=/home/stringer/bin mode=744 owner=stringer group=stringer state=directory
+- name: stringer | clone repo
+  git: repo=${stringer_repo} dest=/home/stringer/stringer update=no
+- name: stringer | ensure ~/stringer ownership'
+  file: dest=/home/stringer/stringer mode=744 owner=stringer group=stringer recurse=yes state=directory
+- name: stringer | ensure database user
+  sudo_user: postgres
+  postgresql_user: login_user=postgres user=stringer password=${stringer_postgres_user_password} role_attr_flags=CREATEDB,NOSUPERUSER,LOGIN
+- name: stringer | ensure database
+  sudo_user: postgres
+  postgresql_db: name=stringer_live
+                 encoding='UTF-8'
+                 template='template0'
+                 state=present
+- name: stringer | install gems
+  shell: cd /home/stringer/stringer && /usr/local/rbenv/shims/bundle install --deployment
+- name: stringer | write fetch_feeds.sh
+  template: src=fetch_feeds.sh.j2 dest=/home/stringer/bin/fetch_feeds.sh owner=stringer group=stringer mode=0755      
+- name: stringer | write production.env
+  template: src=production.env.j2 dest=/home/stringer/stringer/production.env owner=stringer group=stringer mode=0755
+- name: stringer | migrations
+  action: "shell sudo -Hu stringer /bin/bash -c '. /etc/profile.d/rbenv.sh && cd /home/stringer/stringer && . production.env && bundle exec rake db:migrate'"
+- name: stringer | set password
+  action: "shell sudo -Hu stringer /bin/bash -c '. /etc/profile.d/rbenv.sh && cd /home/stringer/stringer && . production.env && bundle exec rake ensure_user_with_password[${stringer_password}]'"
+- name: stringer | cron setup
+  cron: name="fetch feeds" minute="*/${stringer_interval}" user="stringer" job="/home/stringer/bin/fetch_feeds.sh"
+- name: stringer | copy nginx config
+  template: src=stringer.nginx.j2 dest=/etc/nginx/sites-enabled/stringer
+  notify: Restart nginx
+- name: stringer | add to upstart
+  shell: "cd /home/stringer/stringer && /usr/local/rbenv/shims/bundle exec foreman export upstart /etc/init -a stringer -u stringer -e production.env"
+- name: stringer | start
+  service: name=stringer-web state=started
+

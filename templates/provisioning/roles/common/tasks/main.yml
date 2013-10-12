@@ -1,0 +1,35 @@
+---
+- apt_repository: repo='ppa:git-core'
+- apt: pkg=$item state=latest install_recommends=no
+  with_items:
+  - git-core
+  - python-pycurl
+  - python-psycopg2
+  - screen
+  - tmux
+  - ufw
+  - htop
+  - mc
+  - zsh
+  - vim
+- name: ufw | allow ssh
+  shell: ufw allow 22
+- name: ufw | enable
+  shell: ufw --force enable
+- name: zsh | set for master
+  shell: sudo chsh ${master} -s /bin/zsh
+  when: zsh
+- name: dotfiles | clone
+  git: repo=${dotfiles} dest=/home/${master}/dotfiles update=no
+  when: dotfiles is defined
+  notify:
+    - Install dotfiles
+- name: generate $locale
+  command: /usr/sbin/locale-gen $locale
+- name: set locale to $locale
+  command: /usr/sbin/update-locale LANG=$locale LC_ALL=$locale
+- name: set /etc/localtime to $timezone
+  command: /bin/cp /usr/share/zoneinfo/$timezone /etc/localtime
+- name: set /etc/timezone to $timezone
+  template: src=timezone dest=/etc/timezone
+  notify: update tzdata

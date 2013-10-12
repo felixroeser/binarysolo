@@ -1,0 +1,4 @@
+---
+- name: fwd | copy nginx config
+  template: src=fwd.nginx.j2 dest=/etc/nginx/sites-enabled/fwd
+  notify: Restart nginx

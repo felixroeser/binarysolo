@@ -3,29 +3,33 @@
 
 Vagrant.configure('2') do |config|
 
-  config.vm.hostname = '<%= @homebase.hostname %>'
+  config.vm.define "homebase" do |homebase|
 
-  <% if @provider.name == 'digitalocean' %>
-    config.vm.box = 'digital_ocean'
-    config.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
+    homebase.vm.hostname = '<%= @homebase.hostname %>'
 
-    config.vm.provider :digital_ocean do |provider|
-      provider.client_id    = '<%= @provider.config[:client_id] %>'
-      provider.api_key      = '<%= @provider.config[:api_key] %>'
-      provider.region       = '<%= @provider.config[:region] %>'
-      provider.image        = '<%= @provider.config[:image] %>'
-      provider.size         = '<%= @provider.config[:size] %>'
-      provider.ssh_key_name = 'binary_solo_homebase'
-    end  
-  <% end %>
+    <% if @provider.name == 'digitalocean' %>
+      homebase.vm.box = 'digital_ocean'
+      homebase.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
 
-  config.ssh.username = '<%= @homebase.master %>'
-  config.ssh.private_key_path = '<%= @homebase.config[:ssh_key] %>'
+      homebase.vm.provider :digital_ocean do |provider|
+        provider.client_id    = '<%= @provider.config[:client_id] %>'
+        provider.api_key      = '<%= @provider.config[:api_key] %>'
+        provider.region       = '<%= @provider.config[:region] %>'
+        provider.image        = '<%= @provider.config[:image] %>'
+        provider.size         = '<%= @provider.config[:size] %>'
+        provider.ssh_key_name = 'binary_solo_homebase'
+      end  
+    <% end %>
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "_provisioning/playbook.yml"
-    ansible.sudo = true
-    ansible.verbose = true
+    homebase.ssh.username = '<%= @homebase.master %>'
+    homebase.ssh.private_key_path = '<%= @homebase.config[:ssh_key] %>'
+
+    homebase.vm.provision "ansible" do |ansible|
+      ansible.playbook = "_provisioning/playbook.yml"
+      ansible.sudo = true
+      ansible.verbose = 'extra'
+    end
+
   end
 
 end

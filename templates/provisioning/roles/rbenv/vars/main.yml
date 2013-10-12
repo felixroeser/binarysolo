@@ -1,0 +1,4 @@
+---
+rbenv_root: /usr/local/rbenv
+rbenv_global: true
+ruby_version: 1.9.3-p448

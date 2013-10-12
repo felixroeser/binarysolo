@@ -1,0 +1,24 @@
+---
+  - name: nginx | install
+    action: apt name=nginx
+  - name: nginx | write nginx.conf
+    action: template src=nginx.conf.j2 dest=/etc/nginx/nginx.conf
+    notify:
+      - Restart nginx
+  - name: nginx | delete default vhost
+    action: file path=/etc/nginx/sites-enabled/default state=absent
+    notify:
+      - Restart nginx
+  - name: nginx | ensure ssl directories
+    file: dest=/etc/nginx/ssl/$item mode=744 state=directory
+    with_items: $ssl_directories
+    when: ssl_directories is defined
+  - name: nginx | copy certificates
+    copy: src=$ssl_base_path/$item dest=/etc/nginx/ssl/$item
+    with_items: $ssl_files
+    when: ssl_base_path is defined and ssl_files is defined
+    # https://gist.github.com/phred/2897937
+  - name: nginx | allow http
+    shell: ufw allow 80
+  - name: nginx | allow https
+    shell: ufw allow 443

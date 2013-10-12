@@ -1,37 +1,21 @@
 ---
 - hosts: all
-  tasks:
-    - apt: pkg=$item state=latest install_recommends=no
-      with_items:
-      - git-core
-      - python-pycurl
-      - python-psycopg2
-      - screen
-      - tmux
-      - ufw
-    - name: ufw | allow ssh
-      shell: ufw allow 22
-    - name: ufw | enable
-      shell: ufw --force enable
-
-- include: playbooks/locale.yml
-- include: playbooks/basics.yml
-- include: playbooks/rbenv/main.yml
-- include: playbooks/nginx/main.yml
-
-<% if @components[:gitolite].enabled? %>
-- include: playbooks/gitolite/main.yml
-<% end %>
-
-<% if @components[:fwd].enabled? %>
-- include: playbooks/fwd/main.yml
-<% end %>
-
-<% if @components[:stringer].enabled? %>
-- include: playbooks/postgres/main.yml
-- include: playbooks/stringer/main.yml
-<% end %>
-
-<% if @components[:jekyll].enabled? %>
-- include: playbooks/jekyll/main.yml
-<% end %>
+  roles:
+    -  role: common
+- hosts: homebase
+  roles:
+    <% if @components[:stringer].enabled? %>  
+    - role: stringer
+    <% end %>
+    <% if @components[:jekyll].enabled? %>
+    #- role: jekyll
+    <% end %>    
+    <% if @components[:nginx].redirects? %>
+    - role: web_redirects
+    <% end %>
+    <% if @components[:gitolite].enabled? %>
+    - role: gitolite
+    <% end %>
+    <% if @components[:fwd].enabled? %>
+    - role: fwd
+    <% end %>
