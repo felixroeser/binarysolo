@@ -7,6 +7,10 @@ digitalocean:
     region: 'New York 2'
     # Dont change the image for now!
     image: 'Ubuntu 12.04 x64'
+shared:
+    # zsh:
+    #   enabled: true
+    # clone fails: dotfiles: https://github.com/thoughtbot/dotfiles.git    
 homebase:
     master: 'earl'
     hostname: 'homebase'

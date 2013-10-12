@@ -32,5 +32,4 @@
       shell: ufw allow 80
 
   handlers:
-    - name: Restart nginx
-      action: service name=nginx pattern=/etc/init.d/nginx state=restarted enabled=yes  
+    - include: ../../handlers/site.yml

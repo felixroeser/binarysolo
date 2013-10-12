@@ -4,7 +4,7 @@ module BinarySolo
     attr_accessor :config, :components
 
     def initialize(config)
-      @config = config[:homebase]
+      @config = config
 
       @components = {
         fwd:      BinarySolo::Components::Fwd.new(@config, nil),

@@ -51,7 +51,7 @@ export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ```
 git clone https://github.com/felixroeser/binarysolo
 cd binarysolo
-bundle install
+bundle
 thor bootstrap:install_deps
 ```
 
@@ -62,9 +62,19 @@ thor bootstrap:install_deps
   * get a client_id and api_key [here](https://www.digitalocean.com/api_access)
 * Create and edit `config/custom.yml` overwriting the settings in [config/base.yml](config/base.yml) - use [config/custom.sample.yml](config/custom.sample.yml) as a blueprint
   * Required
-    * **TBA**
+    * *ssh_key* point to your private key that will become the master key
+    * *digitalocean*
+      * *client_id* and *api_key*
   * Optional
-    * **TBA**
+    * *digitalocean*
+      * *size* 512MB|1GB|2GB
+      * *region* San Francisco 1|New York 1|New York 2|Amsterdam 1
+  * Dont change for now:
+    * *digitalocean*
+      * *image* Postgres 9.3 ppa is only available for Ubuntu 12.04 x64
+    * *homebase*
+      * *hostname* leave this to homebase
+
 * (Optional) Have ssl certificates ready for the domain you want to use and place them in ssl/domain
   * Use ````thor ssl:gen_crt example.com```` to generate a self signed certificate and key in ````ssl/example.com````
   * Or see [here](https://www.digitalocean.com/community/articles/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04)
@@ -79,3 +89,18 @@ thor homebase:dns_setup
 # ssh into your new box and have a look around
 vagrant ssh
 ```
+
+### Pitfalls
+
+* Digital Ocean might assign the same ip address to a droplet again causing ````vagrant ssh```` to fail. Check your ````~/.ssh/known_hosts```` for an old entry
+* customer.yml is in the 
+* TODO
+  * dive into roles and tags; start [here](https://gist.github.com/marktheunissen/2979474)
+  * configure logrotate
+  * add monitoring like [mosshe](http://www.wyae.de/software/mosshe/)
+  * tests
+  * play with [etcd](https://github.com/coreos/etcd) to store state
+  * checkout dotfiles
+  * the ssl setup is crap! http://www.g-loaded.eu/2005/11/10/be-your-own-ca/
+  * far away country:
+    * add a mail server

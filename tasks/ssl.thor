@@ -22,7 +22,7 @@ class Ssl < Thor
       "openssl rsa -in server.key.org -out server.key",
       "openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt"
     ].each_with_index do |cmd, index|
-      if index == 3
+      if index == 1
         puts "Please enter *.#{domain} as common name! The rest is not that important and leave the challenge password blank!!!".colorize(:green)
       end
       `cd #{path} && #{cmd}`

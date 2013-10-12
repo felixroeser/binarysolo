@@ -3,7 +3,7 @@ module BinarySolo
     attr_accessor :config, :provider, :master, :hostname
 
     def initialize(config)
-      @config   = config[:homebase]      
+      @config   = config[:homebase].merge(config[:shared] || {})
       @master   = @config[:master]
       @hostname = @config[:hostname]
       @provider = Provider.find_by_name(config[:provider]).new(config)

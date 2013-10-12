@@ -5,6 +5,9 @@ master_ssh_key: <%= @config[:ssh_key] %>
 
 nginx_redirects: <%= @components[:nginx].redirects.present? %>
 
+zsh: <%= @config[:zsh][:enabled] rescue nil %>
+dotfiles: <%= @config[:dotfiles] rescue nil %>
+
 <% if @components[:fwd].enabled? %>
 fwd_server: <%= @components[:fwd].public_host %>
 fwd_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@components[:fwd].public_host) %>
