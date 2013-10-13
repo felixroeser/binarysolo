@@ -1,6 +1,6 @@
 ## Binarysolo
 
-*Works for me; will soon work for you*
+*Works for me; might work for you*
 
 https://github.com/felixroeser/binarysolo
 
