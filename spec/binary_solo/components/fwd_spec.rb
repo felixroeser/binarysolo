@@ -4,7 +4,7 @@ describe BinarySolo::Components::Fwd do
 
   Given(:port) { 2000 }
   Given(:homebase) { double :homebase}
-  Given(:fwd) { BinarySolo::Components::Fwd.new(config, homebase) }
+  Given(:fwd) { BinarySolo::Components::Fwd.new(config[:homebase], homebase) }
 
   context 'with fwd enabled and a public host configured' do
     Given(:config) { test_config }
@@ -15,7 +15,6 @@ describe BinarySolo::Components::Fwd do
     describe '#up' do
       pending
     end
-
   end
 
   context 'with fwd disabled' do

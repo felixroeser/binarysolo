@@ -1,3 +1,5 @@
+require 'psych'
+
 module BinarySolo
   class Playbooks
     include ERB::Util

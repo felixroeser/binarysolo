@@ -34,19 +34,19 @@ describe BinarySolo::DomainRecord do
     context 'with gmail data' do
       Given(:data) { 'gmail' }
       Then { domain_record.data == data }
-      Then { domain_record.meta? == true }
+      Then { domain_record.meta?.present? == true }
     end
 
     context 'with homebase data' do
       Given(:data) { 'homebase' }
       Then { domain_record.data == data }
-      Then { domain_record.meta? == true }
+      Then { domain_record.meta?.present? == true }
     end
 
     context 'with an ip address as data' do
       Given(:data) { '192.168.1.1' }
       Then { domain_record.data == data }
-      Then { domain_record.meta? == false }
+      Then { domain_record.meta?.present? == false }
     end
 
   end

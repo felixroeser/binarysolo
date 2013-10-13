@@ -1,5 +1,4 @@
 ---
-ruby_version: 1.9.3-p448
 master: <%= @config[:master] %>
 master_ssh_key: <%= @config[:ssh_key] %>
 
@@ -24,15 +23,6 @@ stringer_postgres_user_password: <%= @components[:stringer].postgres_user_passwo
 stringer_password: <%= @components[:stringer].password %>
 stringer_interval: <%= @components[:stringer].interval || 30 %>
 stringer_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@components[:stringer].public_host) %>
-<% end %>
-
-<% if @components[:jekyll].enabled? %>
-jekyll_server: <%= @components[:jekyll].public_host || '127.0.0.1' %>
-<% if @components[:jekyll].template_repo %>
-jekyll_template_repo: <%= @components[:jekyll].template_repo %>
-jekyll_template_branch: <%= @components[:jekyll].template_branch || 'master' %>
-<% end %>
-jekyll_public_key: <%= @config[:ssh_key] %>.pub
 <% end %>
 
 <% if ssl_base_path = BinarySolo::Ssl.new.base_path %>

@@ -1,26 +1,29 @@
+require_relative 'jekyll_site'
+
 module BinarySolo
   module Components
     class Jekyll
-      attr_accessor :public_host, :ssl_path, :ssl_domain, :template_repo, :template_branch
+      attr_accessor :sites, :public_key
 
       def initialize(config, homebase)
         jekyll_config = config[:jekyll] || {}
 
         @enabled         = jekyll_config[:enabled]
-        @public_host     = jekyll_config[:public_host]
-        @template_repo   = jekyll_config[:template_repo]
-        @template_branch = jekyll_config[:template_branch]
-        @ssl_path    = BinarySolo::Ssl.new.path_for_domain(@public_host)
-        @ssl_domain  = BinarySolo::Ssl.new.path_for_domain(@public_host, false)
+        @sites           = (jekyll_config[:sites] || []).collect { |config| JekyllSite.new(config) }
+        @public_key =  "#{config[:ssh_key]}.pub"
         @homebase    = homebase
       end
 
       def enabled?
-        @enabled && @public_host.present?
+        @enabled && @sites.present?
       end
 
-      def ssl_enabled?
-        enabled? && @ssl_path.present?
+      def valid_sites
+        sites.select { |s| s.valid? }
+      end
+
+      def for_playbook
+        {}
       end
 
       def self.name

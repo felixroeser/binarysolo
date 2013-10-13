@@ -24,6 +24,7 @@ GEM
     hashie (2.0.5)
     json (1.8.0)
     multipart-post (1.2.0)
+    psych (2.0.0)
     rash (0.4.0)
       hashie (~> 2.0.0)
     rspec (2.14.1)
@@ -50,6 +51,7 @@ DEPENDENCIES
   colorize
   digital_ocean
   domainatrix
+  psych
   rspec
   rspec-given
   thor

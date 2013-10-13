@@ -26,4 +26,6 @@ homebase:
     fwd:
       public_host: CHANGE_ME
     jekyll:
-      public_host: 'blog.example.com'
+      sites:
+        - name: 'example_blog'
+          public_host: 'blog.example.com'

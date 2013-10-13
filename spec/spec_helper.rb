@@ -47,6 +47,18 @@ def test_config
         enabled: true,
         public_host: 'fwd.example.com'
       },
+      jekyll: {
+        enabled: true,
+        sites: [
+          {
+            name: 'example_blog', 
+            public_host: 'blog.example.com',
+            template_repo: 'https://github.com/example/up.git',
+            template_branch: 'gh-pages'
+          },
+          {name: 'random_blog',  public_host: 'blog.random.com'}
+        ]
+      },
       stringer: {
         enabled: true,
         public_host: 'feeds.example.com'

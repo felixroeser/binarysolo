@@ -8,7 +8,16 @@
     - role: stringer
     <% end %>
     <% if @components[:jekyll].enabled? %>
-    #- role: jekyll
+    <% @components[:jekyll].valid_sites.each do |site| %>
+    - role: jekyll
+      site_name: <%= site.name %>
+      site_server: <%= site.server %>
+      site_template_repo: <%= site.template_repo %>
+      site_template_branch: <%= site.template_branch %>
+      site_ssl_path: <%= site.ssl_path %>
+      site_ssl_domain: <%= site.ssl_domain %>
+      jekyll_public_key: <%= @components[:jekyll].public_key %>
+    <% end %>
     <% end %>    
     <% if @components[:nginx].redirects? %>
     - role: web_redirects

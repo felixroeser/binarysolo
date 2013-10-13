@@ -7,6 +7,7 @@ gem "colorize"
 gem "digital_ocean"
 gem "domainatrix"
 gem "whois"
+gem "psych"
 
 group :test do
   gem "rspec"

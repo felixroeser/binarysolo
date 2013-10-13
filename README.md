@@ -95,6 +95,8 @@ vagrant ssh
 * Digital Ocean might assign the same ip address to a droplet again causing ````vagrant ssh```` to fail. Check your ````~/.ssh/known_hosts```` for an old entry
 * customer.yml is in the 
 * TODO
+  * turn this into a real gem
+  * get rid of vagrant
   * dive into roles and tags; start [here](https://gist.github.com/marktheunissen/2979474)
   * configure logrotate
   * add monitoring like [mosshe](http://www.wyae.de/software/mosshe/)
