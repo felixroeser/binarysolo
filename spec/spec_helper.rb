@@ -1,13 +1,29 @@
 require 'bundler'
 Bundler.setup
+require 'colorize'
 require 'rspec'
 require 'rspec/given'
 
 require_relative '../lib/binary_solo'
+require_relative '../lib/binary_solo/cli'
 
 RSpec.configure do |config|
+
   config.color_enabled = true
   config.formatter     = 'documentation'
+
+  # See http://stackoverflow.com/questions/15430551/suppress-console-output-during-rspec-tests
+  original_stderr = $stderr
+  original_stdout = $stdout
+  config.before(:all) do 
+    # Redirect stderr and stdout
+    $stderr = File.new(File.join(File.dirname(__FILE__), 'dev_null.txt'), 'w')
+    $stdout = File.new(File.join(File.dirname(__FILE__), 'dev_null.txt'), 'w')
+  end
+  config.after(:all) do 
+    $stderr = original_stderr
+    $stdout = original_stdout
+  end
 end
 
 require_relative 'factories'

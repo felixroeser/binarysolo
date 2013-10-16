@@ -1,0 +1,8 @@
+---
+homebase:
+  stringer:
+    enabled: false
+    password: CHANGE_ME
+    postgres_user_password: CHANGE_ME
+    public_host: 'feeds.example.com'
+    interval: 20

@@ -1,0 +1,64 @@
+#!/usr/bin/env ruby
+
+require 'bundler'
+Dir.chdir(File.expand_path('../../', __FILE__)) { Bundler.setup }
+
+require 'trollop'
+require 'colorize'
+require 'highline'
+require_relative '../lib/binary_solo'
+require_relative '../lib/binary_solo/cli'
+
+exit 1 unless BinarySolo::CLI.check_dependencies
+
+SUB_COMMANDS = %w(init homebase)
+global_opts = Trollop::options do
+  banner "Serving your hacker homebase"
+  opt :dry_run, "Don't actually do anything", short: "-n"
+  opt :yes, "Say yes to everything", short: '-y'
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift
+cmd_opts = case cmd
+  when "init"
+    Trollop::options do
+      opt :force, "Force deletion"
+    end
+  when "homebase"
+    Trollop::options do
+    end
+  else
+    Trollop::die "unknown... #{cmd.inspect}"
+  end
+
+ap [
+  global_opts,
+  cmd,
+  cmd_opts,
+  ARGV
+]
+
+# UGLY
+case cmd
+when 'init'
+  if BinarySolo::CLI::Init.new(ARGV, cmd_opts).run
+    puts "now edit the configuration files in config".colorize(:yellow)
+  end
+when 'homebase'
+  if !BinarySolo.dir_valid?
+    puts "this is not a binary_solo directoy => better run $ binarysolo init".colorize(:red)
+  elsif !BinarySolo.config_valid?
+    puts "your config is invalid - but I dont have any details for you (yet)".colorize(:red)
+  else
+    case ARGV.first
+    when 'ensure'
+      puts "will ensure that your homebase is running and uptodate! Please be patient".colorize(:yellow)
+      BinarySolo::CLI::Homebase::Ensure.new(ARGV, cmd_opts).run
+    else
+      puts "no valid sub command provided - nothing to do for me".colorize(:red)
+    end
+
+  end
+
+end

@@ -1,0 +1,6 @@
+---
+homebase:
+  master: 'earl'
+  hostname: 'homebase'
+  ssh_key: '~/.ssh/id_rsa'
+  public_host: 'exmaple.com'

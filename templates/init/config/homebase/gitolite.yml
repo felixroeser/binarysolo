@@ -1,0 +1,5 @@
+---
+homebase:
+  gitolite:
+    enabled: false
+    ssh_key: '~/.ssh/id_rsa'
