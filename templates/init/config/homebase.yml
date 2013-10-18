@@ -2,5 +2,5 @@
 homebase:
   master: 'earl'
   hostname: 'homebase'
-  ssh_key: '~/.ssh/id_rsa'
+  ssh_key: 'ssh/master_rsa'
   public_host: 'exmaple.com'

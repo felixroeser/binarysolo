@@ -2,12 +2,12 @@ require 'spec_helper'
 
 describe BinarySolo::Provider::DigitalOcean do
 
-  Given(:digital_ocean) { described_class.new(test_config) }
+  Given(:digital_ocean) { described_class.new(test_config[:digital_ocean]) }
 
   describe '#initialize' do
     context 'with a valid config' do
       Then { digital_ocean.name == described_class.name }
-      Then { digital_ocean.config == test_config[:digitalocean] }
+      Then { digital_ocean.config == test_config[:digital_ocean] }
       Then { digital_ocean.client.present? == true }
     end
 

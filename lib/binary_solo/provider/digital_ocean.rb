@@ -5,7 +5,7 @@ module BinarySolo
 
       def initialize(config)
         @name   = self.class.name
-        @config = config[:digitalocean]
+        @config = config
         @debug  = false
         @client = ::DigitalOcean::API.new @config.slice(:client_id, :api_key).merge(debug: @debug)
       end
@@ -53,7 +53,7 @@ module BinarySolo
       end
 
       def self.name
-        'digitalocean'
+        'digital_ocean'
       end
 
     end

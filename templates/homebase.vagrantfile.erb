@@ -1,13 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+#
+# DONT EDIT
+# as binary_solo might overwrite this file
+#
+
 Vagrant.configure('2') do |config|
 
   config.vm.define "homebase" do |homebase|
 
     homebase.vm.hostname = '<%= @homebase.hostname %>'
 
-    <% if @provider.name == 'digitalocean' %>
+    <% if @provider.name == 'digital_ocean' %>
       homebase.vm.box = 'digital_ocean'
       homebase.vm.box_url = "https://github.com/smdahlen/vagrant-digitalocean/raw/master/box/digital_ocean.box"
 
@@ -22,7 +27,7 @@ Vagrant.configure('2') do |config|
     <% end %>
 
     homebase.ssh.username = '<%= @homebase.master %>'
-    homebase.ssh.private_key_path = '<%= @homebase.config[:ssh_key] %>'
+    homebase.ssh.private_key_path = '<%= @homebase.ssh_key %>'
 
     homebase.vm.provision "ansible" do |ansible|
       ansible.playbook = "_provisioning/playbook.yml"

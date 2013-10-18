@@ -1,5 +1,3 @@
-# require "bundler"
-# Bundler.setup
 require 'yaml'
 require 'erb'
 require 'digital_ocean'
@@ -10,6 +8,7 @@ require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/hash'
 require 'logger'
 
+require_relative 'binary_solo/universe'
 require_relative 'binary_solo/provider'
 require_relative 'binary_solo/homebase'
 require_relative 'binary_solo/vagrantfile'
@@ -39,9 +38,9 @@ module BinarySolo
   # FIXME implement a more sophisticated version in the components
   def config_valid?    
     begin
-      return config[:provider] == 'digitalocean' &&
-      config[:homebase][:master].present? &&
-      config[:homebase][:ssh_key].present?
+      return config[:provider] == 'digital_ocean' &&
+        config[:homebase][:master].present? &&
+        config[:homebase][:ssh_key].present?
     rescue
       nil
     end
@@ -49,6 +48,10 @@ module BinarySolo
 
   def dir_valid?
     File.exist?("#{Dir.pwd}/.binary_solo")
+  end
+
+  def root
+    File.expand_path('../../', __FILE__)
   end
 
   extend self

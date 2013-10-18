@@ -1,5 +1,5 @@
 ---
-digitalocean:
+digital_ocean:
   size: '512MB'
   region: 'New York 2'
   # Dont change the image for now!

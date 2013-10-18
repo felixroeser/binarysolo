@@ -30,8 +30,8 @@ require_relative 'factories'
 
 def test_config
   {
-    provider: 'digitalocean',
-    digitalocean: {
+    provider: 'digital_ocean',
+    digital_ocean: {
       client_id: 'random_client_id',
       api_key: 'random_api_key',
       size: '512MB',
@@ -59,6 +59,7 @@ def test_config
       master: 'earl',
       hostname: 'homebase',
       public_host: 'example.com',
+      ssh_key: '~/.ssh/randomkey',
       fwd: {
         enabled: true,
         public_host: 'fwd.example.com'
