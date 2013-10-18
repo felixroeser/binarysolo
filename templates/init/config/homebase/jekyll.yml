@@ -1,0 +1,11 @@
+---
+homebase:
+  jekyll:
+    enabled: false
+    sites:
+      - name: 'example'
+        public_host: 'blog.example.com'
+        template_repo: 'https://github.com/caarlos0/up.git'
+        template_branch: 'gh-pages'
+      - name: 'another_example'
+        public_host: 'blog2.exmaple.com'

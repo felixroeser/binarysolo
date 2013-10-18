@@ -8,10 +8,10 @@ module BinarySolo
       def initialize(config, homebase)
         jekyll_config = config[:jekyll] || {}
 
-        @enabled         = jekyll_config[:enabled]
-        @sites           = (jekyll_config[:sites] || []).collect { |config| JekyllSite.new(config) }
-        @public_key =  "#{config[:ssh_key]}.pub"
-        @homebase    = homebase
+        @enabled    = jekyll_config[:enabled]
+        @sites      = (jekyll_config[:sites] || []).collect { |config| JekyllSite.new(config) }
+        @public_key = File.absolute_path("#{config[:ssh_key]}.pub")
+        @homebase   = homebase
       end
 
       def enabled?

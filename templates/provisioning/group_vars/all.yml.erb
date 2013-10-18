@@ -1,11 +1,11 @@
 ---
-master: <%= @config[:master] %>
-master_ssh_key: <%= @config[:ssh_key] %>
+master: <%= @homebase.master %>
+master_ssh_key: <%= @homebase.ssh_key %>
 
 nginx_redirects: <%= @components[:nginx].redirects.present? %>
 
-zsh: <%= @config[:zsh][:enabled] rescue nil %>
-dotfiles: <%= @config[:dotfiles] rescue nil %>
+zsh: <%= @homebase.config[:zsh][:enabled] rescue nil %>
+dotfiles: <%= @homebase.config[:dotfiles] rescue nil %>
 
 <% if @components[:fwd].enabled? %>
 fwd_server: <%= @components[:fwd].public_host %>
@@ -13,8 +13,8 @@ fwd_ssl_path: <%= BinarySolo::Ssl.new.path_for_domain(@components[:fwd].public_h
 <% end %>
 
 <% if @components[:gitolite].enabled? %>
-gitolite_public_key: <%= @components[:gitolite].ssh_key || @config[:ssh_key] %>.pub
-gitolite_private_key: <%= @components[:gitolite].ssh_key || @config[:ssh_key] %>
+gitolite_public_key: <%= @components[:gitolite].public_key %>
+gitolite_private_key: <%= @components[:gitolite].ssh_key %>
 <% end %>
 
 <% if @components[:stringer].enabled? %>

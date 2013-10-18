@@ -1,0 +1,8 @@
+---
+digital_ocean:
+  size: '512MB'
+  region: 'New York 2'
+  # Dont change the image for now!
+  image: 'Ubuntu 12.04 x64'
+  client_id: CHANGE_ME
+  api_key: CHANGE_ME

@@ -1,3 +1,17 @@
+PATH
+  remote: .
+  specs:
+    binary_solo (0.0.1)
+      active_support (>= 3.0)
+      awesome_print
+      colorize
+      digital_ocean
+      domainatrix
+      highline
+      thor
+      trollop (~> 2.0.0)
+      whois
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -22,9 +36,9 @@ GEM
     given_core (3.1.1)
       sorcerer (>= 0.3.7)
     hashie (2.0.5)
+    highline (1.6.19)
     json (1.8.0)
     multipart-post (1.2.0)
-    psych (2.0.0)
     rash (0.4.0)
       hashie (~> 2.0.0)
     rspec (2.14.1)
@@ -40,19 +54,13 @@ GEM
     rspec-mocks (2.14.3)
     sorcerer (1.0.2)
     thor (0.18.1)
-    whois (3.3.0)
+    trollop (2.0)
+    whois (3.3.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_support (>= 3.0)
-  awesome_print
-  colorize
-  digital_ocean
-  domainatrix
-  psych
+  binary_solo!
   rspec
   rspec-given
-  thor
-  whois

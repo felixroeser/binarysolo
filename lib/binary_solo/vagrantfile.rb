@@ -4,12 +4,12 @@ module BinarySolo
     attr_accessor :config
 
     def initialize(config)
-      @provider = Provider.find_by_name(config[:provider]).new(config)
+      @provider = Provider.find_by_name(config[:provider]).new(config[config[:provider]])
       @homebase = Homebase.new(config)
     end
 
     def template
-      File.read('./templates/homebase.vagrantfile.erb')
+      File.read("#{BinarySolo.root}/templates/homebase.vagrantfile.erb")
     end
 
     def render()
@@ -18,7 +18,7 @@ module BinarySolo
 
     def save
       return nil unless @provider
-      File.open('./Vagrantfile', 'w+') { |f| f.write render }
+      File.open("#{@homebase.root}/Vagrantfile", 'w+') { |f| f.write render }
     end
   end
 end

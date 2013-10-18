@@ -8,23 +8,28 @@ module BinarySolo
     def initialize(config)
       @config = config
 
+      provider_name = @config[:provider]
+      @provider = Provider.find_by_name(provider_name).new(@config[provider_name])          
+
+      @homebase = Homebase.new(config)
+
       @components = {
-        fwd:      BinarySolo::Components::Fwd.new(@config, nil),
-        jekyll:   BinarySolo::Components::Jekyll.new(@config, nil),
-        stringer: BinarySolo::Components::Stringer.new(@config, nil),
-        gitolite: BinarySolo::Components::Gitolite.new(@config, nil),
-        nginx:    BinarySolo::Components::Nginx.new(@config, nil)
+        fwd:      BinarySolo::Components::Fwd.new(@homebase.config, nil),
+        jekyll:   BinarySolo::Components::Jekyll.new(@homebase.config, nil),
+        stringer: BinarySolo::Components::Stringer.new(@homebase.config, nil),
+        gitolite: BinarySolo::Components::Gitolite.new(@homebase.config, nil),
+        nginx:    BinarySolo::Components::Nginx.new(@homebase.config, nil)
       }
     end
 
     def templates
-      @templates ||= Dir['./templates/provisioning/**/*.erb'].collect do |source|
+      @templates ||= Dir["#{BinarySolo.root}/templates/provisioning/**/*.erb"].collect do |source|
         {erb: File.read(source), source: source}
       end
     end
 
     def non_templates
-      Dir['./templates/provisioning/**/*'].select { |f| f !~ /\.erb\z/i && File.file?(f)  } 
+      Dir["#{BinarySolo.root}/templates/provisioning/**/*"].select { |f| f !~ /\.erb\z/i && File.file?(f)  } 
     end
 
     def render
@@ -42,21 +47,21 @@ module BinarySolo
     def save
       ensure_dirs!
       render.each do |rendered|
-        destination = rendered[:source].gsub(/^\.\/templates\/provisioning/, './_provisioning').gsub('.erb', '')
+        destination = rendered[:source].gsub(BinarySolo.root, @homebase.root).gsub(/\/templates\/provisioning/, '/_provisioning').gsub('.erb', '')
         File.open(destination, 'w+') { |f| f.write rendered[:out] }
       end
       non_templates.each do |f|
-        FileUtils.cp(f, f.gsub(/^\.\/templates\/provisioning/, './_provisioning'))
+        destination = f.gsub(BinarySolo.root, @homebase.root).gsub(/\/templates\/provisioning/, '/_provisioning')
+        FileUtils.cp(f, destination)
       end
       self
     end
 
     def ensure_dirs!
-      FileUtils.mkdir('./_provisioning') rescue Errno::EEXIST
       (templates.collect{ |t| t[:source] } + non_templates).
-        collect { |f| File.dirname(f) }.
+        collect { |f| File.dirname(f).gsub(BinarySolo.root, @homebase.root).gsub(/\/templates\/provisioning/, '/_provisioning') }.
         uniq.
-        each{ |d| FileUtils.mkdir_p(d.gsub(/^\.\/templates\/provisioning/, './_provisioning')) }
+        each{ |d| FileUtils.mkdir_p(d) }
     end
 
   end

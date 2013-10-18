@@ -1,0 +1,6 @@
+---
+homebase:
+  nginx:
+    redirects:
+      - {from: 'exmaple.com', to: 'blog.example.com'}
+      - {from: 'www.example.com', to: 'blog.example.com'}

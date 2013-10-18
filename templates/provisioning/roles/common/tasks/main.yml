@@ -1,15 +1,17 @@
 ---
+- apt: pkg=$item state=latest install_recommends=no
+  with_items:
+  - python-pycurl
+  - python-psycopg2
 - apt_repository: repo='ppa:git-core'
 - apt: pkg=$item state=latest install_recommends=no
   with_items:
-  - git-core
-  - python-pycurl
-  - python-psycopg2
+  - git-core  
   - screen
   - tmux
   - ufw
   - htop
-  - mc
+  - mc  
   - zsh
   - vim
 - name: ufw | allow ssh
@@ -18,10 +20,10 @@
   shell: ufw --force enable
 - name: zsh | set for master
   shell: sudo chsh ${master} -s /bin/zsh
-  when: zsh
+  when: zsh is defined and zsh
 - name: dotfiles | clone
   git: repo=${dotfiles} dest=/home/${master}/dotfiles update=yes
-  when: dotfiles is defined
+  when: dotfiles is defined and dotfiles
   notify:
     - Install dotfiles
 - name: generate $locale

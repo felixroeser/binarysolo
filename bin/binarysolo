@@ -1,0 +1,104 @@
+#!/usr/bin/env ruby
+
+require 'bundler'
+Dir.chdir(File.expand_path('../../', __FILE__)) { Bundler.setup }
+
+require 'trollop'
+require 'colorize'
+require 'highline'
+require_relative '../lib/binary_solo'
+require_relative '../lib/binary_solo/cli'
+
+exit 1 unless BinarySolo::CLI.check_dependencies && BinarySolo::CLI.check_vagrant
+
+SUB_COMMANDS = %w(init homebase dns fwd)
+global_opts = Trollop::options do
+  banner "Serving your hacker homebase"
+  # opt :dry_run, "Don't actually do anything", short: "-n"
+  # opt :yes, "Say yes to everything", short: '-y'
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift
+cmd_opts = case cmd
+  when "init"
+    Trollop::options do
+    end
+  when "homebase", "dns", "fwd"
+    Trollop::options do
+    end
+  else
+    Trollop::die "unknown... #{cmd.inspect}"
+  end
+
+# ap [
+#   global_opts,
+#   cmd,
+#   cmd_opts,
+#   ARGV
+# ]
+
+def precheck
+  if !BinarySolo.dir_valid?
+    puts "this is not a binary_solo directoy => better run $ binarysolo init".colorize(:red)
+    false
+  elsif !BinarySolo.config_valid?
+    puts "your config is invalid - but I dont have any details for you (yet)".colorize(:red)
+    false
+  else
+    true
+  end  
+end
+
+# UGLY
+if cmd == 'init'
+  if BinarySolo::CLI::Init.new(ARGV, cmd_opts).run
+    puts "now edit the configuration files in config".colorize(:yellow)
+    exit 0
+  else
+    puts "failed to write your playbooks...".colorize(:red)
+    exit 1
+  end
+end
+
+config = BinarySolo.config
+homebase = BinarySolo::Homebase.new(config)
+exit 1 unless precheck
+
+case cmd
+when 'homebase'
+  unless homebase.ssh_key_present?
+    puts "Your homebase ssh key is missing!".colorize(:red)
+    puts "run the following command and please use a string keyphrase:"
+    puts "$ ssh-keygen -t rsa -C 'you@example.com' -f #{homebase.ssh_key}"
+    exit 1
+  end
+
+  case ARGV.first
+  when 'ensure'
+    puts "will ensure that your homebase is running and uptodate! Please be patient".colorize(:yellow)
+    BinarySolo::CLI::Homebase::Ensure.new(ARGV, cmd_opts).run
+  else
+    puts "no valid sub command provided - nothing to do for me".colorize(:red)
+  end
+when 'fwd'
+  if port = ARGV.first
+    fwd = BinarySolo::Components::Fwd.new(config, homebase)
+
+    unless fwd.enabled?
+      puts "fwd is not enabled! please check your config".colorize(:red)
+      exit 1
+    end
+
+    puts "reverse tunnel on port #{port} should be up an running at http://#{fwd.public_host}!".colorize(:green)
+    puts "kill the connection with Control-C"
+
+    fwd.up(port)
+  else
+    puts "please port the port you want to forward".colorize(:red)
+  end
+when 'dns'
+  if ARGV.first == 'update'
+    BinarySolo::DnsSetup.new(config, homebase).save
+  end
+end

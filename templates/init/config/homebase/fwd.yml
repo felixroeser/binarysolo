@@ -1,0 +1,5 @@
+---
+homebase:
+  fwd:
+    enabled: false
+    public_host: 'pseudosecret.example.com'
