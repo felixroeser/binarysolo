@@ -98,5 +98,7 @@ when 'fwd'
     puts "please port the port you want to forward".colorize(:red)
   end
 when 'dns'
-  BinarySolo::DnsSetup.new(config, homebase).save
+  if ARGV.first == 'update'
+    BinarySolo::DnsSetup.new(config, homebase).save
+  end
 end

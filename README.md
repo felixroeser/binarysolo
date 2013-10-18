@@ -17,7 +17,7 @@ Manage arbitrary development boxes and have a constant homebase
 
 Requirements
 
-* Vagrant 1.3+ (might go away at some point)
+* Vagrant 1.3+ (will go away at some point)
 * Ansible 1.3
 * Ruby
 * A dedicated domain: kinda pointless without - at least you should have an A records with your current dns provider
@@ -49,13 +49,19 @@ export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 ### Together again
 
 ```
+# Not provided yet: gem install binarysolo
 git clone https://github.com/felixroeser/binarysolo
 cd binarysolo
 bundle
-thor bootstrap:install_deps
+vagrant install vagrant-omnibus
+vagrant install vagrant-digitalocean
+# Go whereever you want to store your homebase config
+cd
+~/PATH/bin/binarysolo init my_binarysolo
+cd my_binarysolo
 ```
 
-**Let's do some basic configuration**
+Now do some basic configuration:
 
 * Get a [Digitalocean](https://www.digitalocean.com) account
   * we will be fine with the 0.7ct/hour instance
@@ -79,25 +85,23 @@ thor bootstrap:install_deps
   * Use ````thor ssl:gen_crt example.com```` to generate a self signed certificate and key in ````ssl/example.com````
   * Or see [here](https://www.digitalocean.com/community/articles/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04)
 
+Go on
+
 ```
-thor homebase:vagrantfile
-thor homebase:playbooks
 # be patient - provisioning the box takes some time
-vagrant up --provider digital_ocean
+~/PATH/bin/binarysolo homebase ensure
 # apply the configured dns records to the digital ocean nameserver
-thor homebase:dns_setup
-# ssh into your new box and have a look around
-vagrant ssh
+~/PATH/bin/binarysolo dns update
 ```
+
+Done! Log into your box using: ```vagrant ssh```
 
 ### Pitfalls
 
 * Digital Ocean might assign the same ip address to a droplet again causing ````vagrant ssh```` to fail. Check your ````~/.ssh/known_hosts```` for an old entry
 * customer.yml is in the 
 * TODO
-  * turn this into a real gem
   * get rid of vagrant
-  * dive into roles and tags; start [here](https://gist.github.com/marktheunissen/2979474)
   * configure logrotate
   * add monitoring like [mosshe](http://www.wyae.de/software/mosshe/)
   * tests
