@@ -1,11 +1,3 @@
-# Config with secrects
-config/custom.yml
-config/ssl
-
 # Dynamic files
-.vagrant
-vagrant_ansible_inventory_*
-Vagrantfile
-_provisioning
-
+spec/dev_null.txt
 README.draft
