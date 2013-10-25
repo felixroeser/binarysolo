@@ -47,7 +47,7 @@ def precheck
     false
   else
     true
-  end  
+  end
 end
 
 # UGLY
@@ -78,6 +78,9 @@ when 'homebase'
   when 'ensure'
     puts "will ensure that your homebase is running and uptodate! Please be patient".colorize(:yellow)
     BinarySolo::CLI::Homebase::Ensure.new(ARGV, cmd_opts).run
+  when 'check'
+    puts 'TBI'.colorize(:yellow)
+    BinarySolo::CLI::Homebase::Check.new(ARGV, cmd_opts).run
   else
     puts "no valid sub command provided - nothing to do for me".colorize(:red)
   end
@@ -100,5 +103,7 @@ when 'fwd'
 when 'dns'
   if ARGV.first == 'update'
     BinarySolo::DnsSetup.new(config, homebase).save
+  else
+    puts "no valid sub command provided - nothing to do for me".colorize(:red)
   end
 end

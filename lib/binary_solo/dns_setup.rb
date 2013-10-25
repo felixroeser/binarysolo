@@ -4,7 +4,6 @@ require_relative 'dns/domain_record'
 
 module BinarySolo
   class DnsSetup
-
     attr_reader :config, :domains
 
     def initialize(config, homebase)
@@ -81,7 +80,6 @@ module BinarySolo
         end
       end
     end
-
 
     def ensure_records!
       @registered_domains = nil

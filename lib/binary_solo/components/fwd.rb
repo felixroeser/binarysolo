@@ -7,10 +7,10 @@ module BinarySolo
         fwd_config = config[:fwd] || {}
 
         @enabled     = fwd_config[:enabled]
+        @homebase    = homebase        
         @public_host = fwd_config[:public_host]
         @ssl_path    = BinarySolo::Ssl.new.path_for_domain(@public_host)
         @ssl_domain  = BinarySolo::Ssl.new.path_for_domain(@public_host, false)        
-        @homebase    = homebase
       end
 
       def enabled?

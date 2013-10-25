@@ -1,5 +1,5 @@
-# Dynamic files
-spec/dev_null.txt
+Gemfile.lock
+binary_solo-*.gem
 README.draft
 
 # Trash

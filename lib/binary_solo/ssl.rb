@@ -3,8 +3,9 @@ require 'domainatrix'
 module BinarySolo
   class Ssl
 
-    def initialize
-      @logger = BinarySolo.logger
+    def initialize(homebase=nil)
+      @logger   = BinarySolo.logger
+      @homebase = homebase
     end
 
     def path_for_domain(domain=nil, full=true)
@@ -34,8 +35,8 @@ module BinarySolo
     end
 
     def base_path
-      # FIXME make this configurable
-      path = File.expand_path('../../../config/ssl', __FILE__)
+      path = "#{@homebase.try(&:root) || Dir.pwd}/ssl"
+
       File.exist?(path) ? path : nil
     end
 

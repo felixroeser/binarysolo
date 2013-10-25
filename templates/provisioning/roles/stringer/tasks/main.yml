@@ -16,9 +16,10 @@
 - name: stringer | create ~/bin
   file: dest=/home/stringer/bin mode=744 owner=stringer group=stringer state=directory
 - name: stringer | clone repo
+  sudo_user: stringer
   git: repo=${stringer_repo} dest=/home/stringer/stringer update=no
 - name: stringer | ensure ~/stringer ownership'
-  file: dest=/home/stringer/stringer mode=744 owner=stringer group=stringer recurse=yes state=directory
+  file: dest=/home/stringer/stringer mode=744 owner=stringer group=stringer recurse=no state=directory
 - name: stringer | ensure database user
   sudo_user: postgres
   postgresql_user: login_user=postgres user=stringer password=${stringer_postgres_user_password} role_attr_flags=CREATEDB,NOSUPERUSER,LOGIN

@@ -50,6 +50,7 @@ module BinarySolo
 
       def init_git
         Dir.chdir(directory) do
+          File.open('.gitignore', 'w') { |f| f.puts('_provisioning') } rescue nil
           puts `git init`
           puts `git add .`
           puts `git commit -m 'basic file structure'`
