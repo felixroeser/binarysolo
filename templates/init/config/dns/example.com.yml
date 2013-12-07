@@ -1,6 +1,6 @@
 ---
 dns:
-  tld:
+  tld_not_active:
     example.com:
       - {type: 'A', name: '@',   data: 'homebase'}
       - {type: 'A', name: 'www', data: 'homebase'}

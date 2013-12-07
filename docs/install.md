@@ -5,10 +5,12 @@
 * A digital ocean account 
   * you can spare $0.007/hour
   * grab your api_key and a client_id
-* Vagrant 1.3+ (will go away at some point)
-* Ansible 1.3
+* Vagrant 1.3+ (will go away at some point - but everybody has it installed anyways, right?)
+* Ansible 1.3+ (it's really worth checking it out)
 * Ruby (tested with 2.0)
 * A dedicated domain: kinda pointless without. [Read on](docs/dns.md) for details
+  * Either set the namesserver to Digital Ocean
+  * Set edit the current domain's nameserver to point to your new box
 
 ### OSX
 
@@ -24,7 +26,7 @@ export SSL_CERT_FILE=/usr/local/opt/curl-ca-bundle/share/ca-bundle.crt
 
 ```
 # download and install Vagrant http://downloads.vagrantup.com/
-wget http://files.vagrantup.com/packages/db8e7a9c79b23264da129f55cf8569167fc22415/vagrant_1.3.3_x86_64.deb -O /tmp/vagrant.deb
+wget http://files.vagrantup.com/packages/a40522f5fabccb9ddabad03d836e120ff5d14093/vagrant_1.3.5_x86_64.deb -O /tmp/vagrant.deb
 sudo dpkg -i /tmp/vagrant.deb
 sudo apt-get install python-software-properties
 sudo add-apt-repository ppa:rquillo/ansible

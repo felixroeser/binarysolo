@@ -1,4 +1,5 @@
 module BinarySolo
+  # TODO not really utilized right now
   class Universe
     attr_reader :config, :name
 

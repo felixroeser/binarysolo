@@ -24,6 +24,7 @@ module BinarySolo
         return unless valid? && create_directories && copy_templates && init_git
 
         puts "...all set!".colorize(:green)
+        puts "now cd in #{@directory} and edit the config files"
 
         true
       end

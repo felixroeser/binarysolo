@@ -1,23 +1,34 @@
-Now do some basic configuration:
+Now do some basic configuration! **Beware there is litte to no error checking so far**
+
+## config/digitalocean.yml
 
 * Get a [Digitalocean](https://www.digitalocean.com) account
   * we will be fine with the 0.7ct/hour instance
   * get a client_id and api_key [here](https://www.digitalocean.com/api_access)
-* Create and edit `config/custom.yml` overwriting the settings in [config/base.yml](config/base.yml) - use [config/custom.sample.yml](config/custom.sample.yml) as a blueprint
-  * Required
-    * *ssh_key* point to your private key that will become the master key
-    * *digitalocean*
-      * *client_id* and *api_key*
-  * Optional
-    * *digitalocean*
-      * *size* 512MB|1GB|2GB
-      * *region* San Francisco 1|New York 1|New York 2|Amsterdam 1
-  * Dont change for now:
-    * *digitalocean*
-      * *image* Postgres 9.3 ppa is only available for Ubuntu 12.04 x64
-    * *homebase*
-      * *hostname* leave this to homebase
+* Choose
+  * size: 512MB (is enough), 1GB, 2GB ...
+  * region: San Francisco 1, New York 1, Amsterdam 1
 
-* (Optional) Have ssl certificates ready for the domain you want to use and place them in ssl/domain
-  * Use ````thor ssl:gen_crt example.com```` to generate a self signed certificate and key in ````ssl/example.com````
-  * Or see [here](https://www.digitalocean.com/community/articles/how-to-create-a-ssl-certificate-on-nginx-for-ubuntu-12-04)
+## config/homebase.yml
+
+Better don't touch the file at all for now
+
+## config/components/stringer.yml
+
+* Set enabled to *true*
+* Set random postgres_user_password ````openssl rand -base64 32````
+* Point public_host to whatever you need
+  * Binarysolo will add an A record to the Digital Ocean Nameserver
+  * Manually set an A record at your domain's current nameserver if you don't want to move it
+
+## config/dns/*
+
+* Delete example.com.yml if you don't want BinarySolo to setup any custom records for you. 
+* Create a yml file per domain and set the (manual) records that you need
+  * A, TXT, CNAME, MX support right now
+
+More details TBA
+
+## Giteolite, Fwd, Jekyll, Nginx, SSL
+
+**documentation tba** - Should work but better make sure that the basics are working and leave them disabled.

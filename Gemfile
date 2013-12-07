@@ -2,4 +2,5 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'digital_ocean', git: 'https://github.com/felixroeser/digital_ocean.git'
+# Includes a patch not yet available on rubygems
+gem 'digital_ocean', git: 'https://github.com/rmoriz/digital_ocean.git'

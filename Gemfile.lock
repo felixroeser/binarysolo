@@ -1,6 +1,6 @@
 GIT
-  remote: https://github.com/felixroeser/digital_ocean.git
-  revision: 0cf85e71b6a2e465452d6856b2537a3ff4349878
+  remote: https://github.com/rmoriz/digital_ocean.git
+  revision: 782639d19f7b3071809dd019075bfb2184baa644
   specs:
     digital_ocean (1.2.0)
       faraday (~> 0.8.7)

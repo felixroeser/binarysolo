@@ -20,20 +20,26 @@ Manage arbitrary development boxes and have a constant homebase
 ````
 # Go whereever you want to store your binarysolo config directory
 cd
-~/PATH/bin/binarysolo init my_binarysolo
+binarysolo init my_binarysolo
 cd my_binarysolo
 ````
 * Read the [configuration help](docs/configuration.md)
 * configure your setup
+* generate a (password protected) ssh keypair to be stored in ./ssh 
+  * ````ssh-keygen -t rsa -f ssh/earl_rsa -C "your_email@example.com"````
+  * Start ssh agent and load the key ````ssh-agent ; ssh-add ssh/earl_rsa````
+  * If you changed ssh keys and you already have a key named *binary_solo_homebase* registered with Digital Ocean => delete it
 
 ```
+# Commit your setup 
+git add --all .
+git commit -m 'initial setup'
 # be patient - provisioning the box takes some time
-~/PATH/bin/binarysolo homebase ensure
+binarysolo homebase ensure
 # apply the configured dns records to the digital ocean nameserver
-~/PATH/bin/binarysolo dns update
+binarysolo dns update
 # SSL TBA
 ```
-* Commit save your setup ````git add . ; git commit -m 'initial setup'````
 
 Done! Log into your box using: ```vagrant ssh``` and read about the [other components](docs/components.md)
 

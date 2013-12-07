@@ -22,7 +22,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'awesome_print', '~> 1.2'
   gem.add_dependency 'colorize', '~> 0.6.0'
   gem.add_dependency 'highline', '~> 1.6.19'
-  # gem.add_dependency 'digital_ocean', '~> 1.2.0'
+  # See Gemfile gem.add_dependency 'digital_ocean', '~> 1.2.0'
   gem.add_dependency 'domainatrix', '~> 0.0.11'
   gem.add_dependency 'whois', '~> 3.3.1'
 
