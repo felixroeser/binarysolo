@@ -1,5 +1,8 @@
 The endless todo list:
 
+* build out *universe* to support more than one setup in digital ocean
+* detect the ssh already being registered with digital ocean and check if current
+* no real need to store all roles and playbook in the users dirs
 * dont write abs path to the playbooks
 * get rid of vagrant
 * backup option via digitalocean plus rsync

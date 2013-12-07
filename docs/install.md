@@ -40,6 +40,7 @@ export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
 
 ```
 # Not provided yet: gem install binarysolo
+cd /usr/local/somewhere
 git clone https://github.com/felixroeser/binarysolo
 cd binarysolo
 bundle

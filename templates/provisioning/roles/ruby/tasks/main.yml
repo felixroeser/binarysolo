@@ -1,0 +1,18 @@
+---
+- apt_repository: repo='ppa:brightbox/ruby-ng' update_cache=yes
+- apt: pkg=$item state=latest install_recommends=no
+  with_items:
+  - build-essential
+  - gawk
+  - libyaml-dev
+  - libssl-dev
+  - zlib1g-dev
+  - libreadline-dev  
+- name: Ruby | install
+  action: $ansible_pkg_mgr pkg='$item' state=installed
+  with_items:
+  - ruby1.9.1
+  - rubygems
+  - ruby1.9.1-dev
+- name: Ruby | install bundler, rake, foreman
+  shell: 'gem install --no-ri --no-rdoc bundler rake foreman'

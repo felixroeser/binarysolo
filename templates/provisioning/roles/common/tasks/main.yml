@@ -3,7 +3,7 @@
   with_items:
   - python-pycurl
   - python-psycopg2
-- apt_repository: repo='ppa:git-core'
+- apt_repository: repo='ppa:git-core' update_cache=yes
 - apt: pkg=$item state=latest install_recommends=no
   with_items:
   - git-core  

@@ -35,9 +35,9 @@ cd my_binarysolo
 git add --all .
 git commit -m 'initial setup'
 # be patient - provisioning the box takes some time
-binarysolo homebase ensure
+/usr/local/somewhere/bin/binarysolo homebase ensure
 # apply the configured dns records to the digital ocean nameserver
-binarysolo dns update
+/usr/local/somewhere/bin/binarysolo dns update
 # SSL TBA
 ```
 

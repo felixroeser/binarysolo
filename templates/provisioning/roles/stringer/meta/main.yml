@@ -1,5 +1,5 @@
 ---
 dependencies:
-- { role: rbenv, ruby_version: 1.9.3-p448, rbenv_global: true }
+- { role: ruby }
 - { role: postgres }
 - { role: nginx }

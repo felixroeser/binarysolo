@@ -2,6 +2,7 @@
 - hosts: all
   roles:
     -  role: common
+    -  role: ruby
 - hosts: homebase
   roles:
     <% if @components[:stringer].enabled? %>  
